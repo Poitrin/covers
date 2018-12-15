@@ -1,0 +1,25 @@
+version: '2'
+services:
+  db:
+    image: postgres:11
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_DB: covers
+      POSTGRES_PASSWORD: password
+    ports:
+      - "5432:5432"
+  # docker-compose run --rm grails bash
+  grails:
+    image: openjdk:8 # Grails 3.3.8 does not support Java 10. You will have to use Java 7 or Java 8 if you want to use Grails 3.3.8.
+    environment:
+      GRAILS_HOME: "/grails"
+    volumes:
+      - ./grails:/grails
+      - ./covers:/covers
+      - ./home:/root
+    ports:
+      - "8080:8080"
+    depends_on:
+      - db
+    working_dir: "/covers"
+    command: "/grails/bin/grails run-app"
