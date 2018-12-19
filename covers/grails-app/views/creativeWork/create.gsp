@@ -1,18 +1,20 @@
 <!DOCTYPE html>
 <html>
-    <head>
-        <meta name="layout" content="main" />
-        <g:set var="entityName" value="${message(code: 'creativeWork.label', default: 'CreativeWork')}" />
-        <title><g:message code="default.create.label" args="[entityName]" /></title>
-    </head>
-    <body>
-        <a href="#create-creativeWork" class="skip" tabindex="-1"><g:message code="default.link.skip.label" default="Skip to content&hellip;"/></a>
-        <div class="nav" role="navigation">
-            <ul>
-                <li><a class="home" href="${createLink(uri: '/')}"><g:message code="default.home.label"/></a></li>
-                <li><g:link class="list" action="index"><g:message code="default.list.label" args="[entityName]" /></g:link></li>
-            </ul>
-        </div>
+  <head>
+    <meta name="layout" content="main" />
+    <g:set var="entityName" value="${message(code: 'creativeWork.label', default: 'CreativeWork')}" />
+    <title><g:message code="default.create.label" args="[entityName]" /></title>
+  </head>
+  <body>
+  <div class="columns">
+    <div class="column">
+      <g:link class="button" action="index">
+        <!-- TODO: Translate -->
+        ← Back to list
+      </g:link>
+    </div>
+  </div>
+
         <div id="create-creativeWork" class="content scaffold-create" role="main">
             <h1><g:message code="default.create.label" args="[entityName]" /></h1>
             <g:if test="${flash.message}">
@@ -25,14 +27,13 @@
                 </g:eachError>
             </ul>
             </g:hasErrors>
-            <g:form resource="${this.creativeWork}" method="POST">
-                <fieldset class="form">
-                    <f:all bean="creativeWork"/>
-                </fieldset>
-                <fieldset class="buttons">
-                    <g:submitButton name="create" class="save" value="${message(code: 'default.button.create.label', default: 'Create')}" />
-                </fieldset>
-            </g:form>
-        </div>
-    </body>
+
+      <g:form resource="${this.creativeWork}" method="POST">
+        <f:field bean="creativeWork" property="artist"/>
+        <f:field bean="creativeWork" property="title"/>
+
+        <g:submitButton name="create" class="button" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+      </g:form>
+    </div>
+  </body>
 </html>
