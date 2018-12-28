@@ -3,15 +3,16 @@
   <head>
     <meta name="layout" content="main" />
     <g:set var="entityName" value="${message(code: 'creativeWork.label', default: 'CreativeWork')}" />
-    <title><g:message code="default.list.label" args="[entityName]" /></title>
+    <title><g:message code="creativeWork.list.label" /></title>
   </head>
   <body>
     <div id="list-creativeWork" class="content scaffold-list" role="main">
-      <h1><g:message code="default.list.label" args="[entityName]" /></h1>
+      <h1><g:message code="creativeWork.list.label" /></h1>
       <g:if test="${flash.message}">
         <div class="message" role="status">${flash.message}</div>
       </g:if>
 
+      <!-- TODO: Wenn creativeWorkList leer, dann 2. null! (Sollte aber im Normalfall nicht auftreten) -->
       <g:each in="${[null, *creativeWorkList].collate(4)}" var="row">
       <div class="tile is-ancestor">
         <g:each in="${row}" var="creativeWork">

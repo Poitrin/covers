@@ -12,9 +12,8 @@
 <body>
   <div class="columns">
     <div class="column">
-      <g:link class="button" action="index">
-        <!-- TODO: Translate -->
-        ← Back to list
+      <g:link class="button" action="index" controller="creativeWork">
+        ← <g:message code="default.backToList" default="Back to list" />
       </g:link>
     </div>
   </div>
@@ -41,7 +40,76 @@
     <div class="message" role="status">${flash.message}</div>
   </g:if>
 
-  
+  <!-- TODO: DRY!!! -->
+  <g:hasErrors bean="${this.part}">
+  <ul class="errors" role="alert">
+    <g:eachError bean="${this.part}" var="error">
+    <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
+    </g:eachError>
+  </ul>
+  </g:hasErrors>
+
+  <g:hasErrors bean="${this.suggestion}">
+  <ul class="errors" role="alert">
+    <g:eachError bean="${this.suggestion}" var="error">
+    <li <g:if test="${error in org.springframework.validation.FieldError}">data-field-id="${error.field}"</g:if>><g:message error="${error}"/></li>
+    </g:eachError>
+  </ul>
+  </g:hasErrors>
+
+  <g:each in="${[*creativeWork.parts.toArray(), null]}" var="part">
+  <div class="columns">
+    <div class="column">
+      <div class="box">
+        <g:if test="${part}">
+        <p class="title">${part.name}</p>
+        <!-- Suggestions: -->
+        <g:each in="${[null, *part.suggestions.toArray()].collate(3)}" var="row">
+        <div class="tile is-ancestor">
+          <g:each in="${row}" var="suggestion">
+          <div class="tile is-parent is-4 suggestion">
+            <g:if test="${suggestion}">
+            <div class="tile is-child box">
+              ${suggestion.instrument}
+            </div>
+            </g:if>
+            <g:else>
+              <!-- Field is displayed when user hasn't submitted data yet
+                OR when it's the field that has been submitted -->
+              <g:if test="${!params.partId || (params.partId.toInteger() == part.id)}">
+              <g:form url="/creativeWorks/${creativeWork.id}/parts/${part.id}/suggestions" method="POST" style="width: 100%">
+                <g:hiddenField name="partId" value="${part.id}" />
+                <f:field bean="suggestion" property="instrument" widget="textarea"
+                  placeholder="${message(code: 'suggestion.instrument.label')}"
+                  label="hidden" />
+
+                <g:submitButton name="create" class="button" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+              </g:form>
+              </g:if>
+            </g:else>
+          </div>
+          </g:each>
+        </div>
+        </g:each>
+        </g:if>
+        <g:else>
+        <div class="columns">
+          <div class="column is-6">
+            <g:form url="/creativeWorks/${creativeWork.id}/parts" method="POST">
+              <g:hiddenField name="creativeWorkId" value="${creativeWork.id}" />
+              <f:field bean="part" property="name" widget="textarea"
+                placeholder="${message(code: 'part.name.label')}"
+                label="hidden" />
+              <g:submitButton name="create" class="button" value="${message(code: 'default.button.create.label', default: 'Create')}" />
+            </g:form>
+          </div>
+        </div>
+        </g:else>
+      </div>
+    </div>
+  </div>
+  </g:each>
+
 </body>
 
 </html>

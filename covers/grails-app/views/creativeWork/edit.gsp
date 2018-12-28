@@ -27,13 +27,10 @@
             </ul>
             </g:hasErrors>
             <g:form resource="${this.creativeWork}" method="PUT">
-                <g:hiddenField name="version" value="${this.creativeWork?.version}" />
-                <fieldset class="form">
-                    <f:all bean="creativeWork"/>
-                </fieldset>
-                <fieldset class="buttons">
-                    <input class="save" type="submit" value="${message(code: 'default.button.update.label', default: 'Update')}" />
-                </fieldset>
+              <f:field bean="creativeWork" property="artist"/>
+              <f:field bean="creativeWork" property="title"/>
+
+              <g:submitButton name="create" class="button" value="${message(code: 'default.button.update.label', default: 'Update')}" />
             </g:form>
         </div>
     </body>

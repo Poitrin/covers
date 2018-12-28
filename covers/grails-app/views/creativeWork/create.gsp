@@ -9,8 +9,7 @@
   <div class="columns">
     <div class="column">
       <g:link class="button" action="index">
-        <!-- TODO: Translate -->
-        ← Back to list
+        ← <g:message code="default.backToList" default="Back to list" />
       </g:link>
     </div>
   </div>
@@ -29,8 +28,17 @@
             </g:hasErrors>
 
       <g:form resource="${this.creativeWork}" method="POST">
-        <f:field bean="creativeWork" property="artist"/>
-        <f:field bean="creativeWork" property="title"/>
+        <div class="columns">
+          <div class="column is-6">
+            <f:field bean="creativeWork" property="artist"/>
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-6">
+            <f:field bean="creativeWork" property="title"/>
+          </div>
+        </div>
 
         <g:submitButton name="create" class="button" value="${message(code: 'default.button.create.label', default: 'Create')}" />
       </g:form>
