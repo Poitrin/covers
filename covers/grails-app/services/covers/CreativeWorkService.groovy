@@ -5,14 +5,18 @@ import grails.gorm.services.Service
 @Service(CreativeWork)
 interface CreativeWorkService {
 
-    CreativeWork get(Serializable id)
+  CreativeWork get(Serializable id)
 
-    List<CreativeWork> list(Map args)
+  List<CreativeWork> list(Map args)
 
-    Long count()
+  List<CreativeWork> findAllByApprovedOrDateCreatedGreaterThan(Boolean approved, Date dateCreated)
 
-    void delete(Serializable id)
+  List<CreativeWork> findAllByApprovedOrIpAddressHash(Boolean approved, String ipAddressHash)
 
-    CreativeWork save(CreativeWork creativeWork)
+  Long count()
+
+  void delete(Serializable id)
+
+  CreativeWork save(CreativeWork creativeWork)
 
 }

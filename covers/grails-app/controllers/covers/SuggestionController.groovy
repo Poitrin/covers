@@ -8,6 +8,7 @@ class SuggestionController {
   CreativeWorkService creativeWorkService
   PartService partService
   SuggestionService suggestionService
+  UtilityService utilityService
 
   static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -18,6 +19,8 @@ class SuggestionController {
 
     Suggestion suggestion = new Suggestion()
 
+    def currentUserIpAddressHash = utilityService.getCurrentUserIpAddressHash(request)
+
     // TODO: wenn aus Command objects ausgelesen wird...
     if (suggestion == null) {
       notFound()
@@ -26,12 +29,14 @@ class SuggestionController {
 
     suggestion.part = part
     suggestion.instrument = params.instrument
+    suggestion.ipAddressHash = utilityService.getCurrentUserIpAddressHash(request)
     suggestion.validate() // ... so that we can extract the errors
 
     if (suggestion.hasErrors()) {
       respond suggestion.errors, view: '/creativeWork/show', model: [
         creativeWork: creativeWork,
-        part: new Part()
+        part: new Part(),
+        currentUserIpAddressHash: currentUserIpAddressHash
       ]
       return
     }

@@ -12,8 +12,8 @@
         <div class="message" role="status">${flash.message}</div>
       </g:if>
 
-      <!-- TODO: Wenn creativeWorkList leer, dann 2. null! (Sollte aber im Normalfall nicht auftreten) -->
-      <g:each in="${[null, *creativeWorkList].collate(4)}" var="row">
+      <!-- Note: When creativeWorkList is empty, "[null, *creativeWorkList]" would display 2 "Create new creative work" links -->
+      <g:each in="${(creativeWorkList == null ? [null] : [null, *creativeWorkList]).collate(4)}" var="row">
       <div class="tile is-ancestor">
         <g:each in="${row}" var="creativeWork">
         <div class="tile is-parent is-3">

@@ -22,8 +22,9 @@
     <div class="column">
       <h1 class="title">${creativeWork.artist} – ${creativeWork.title}</h1>
     </div>
+    <!-- TODO: as soon as admin features are available: -->
+    <g:if test="${false}">
     <div class="column">
-      <!-- TODO: SCHÖNER! -->
       <div class="is-pulled-right">
         <g:link class="button" action="edit" resource="${this.creativeWork}">
           <g:message code="default.button.edit.label" default="Edit" />
@@ -34,6 +35,7 @@
         </g:form>
       </div>
     </div>
+    </g:if>
   </div>
 
   <g:if test="${flash.message}">
@@ -57,14 +59,14 @@
   </ul>
   </g:hasErrors>
 
-  <g:each in="${[*creativeWork.parts.toArray(), null]}" var="part">
+  <g:each in="${[*creativeWork.approvedParts(currentUserIpAddressHash), null]}" var="part">
   <div class="columns">
     <div class="column">
       <div class="box">
         <g:if test="${part}">
         <p class="title">${part.name}</p>
         <!-- Suggestions: -->
-        <g:each in="${[null, *part.suggestions.toArray()].collate(3)}" var="row">
+        <g:each in="${[null, *part.approvedSuggestions(currentUserIpAddressHash)].collate(3)}" var="row">
         <div class="tile is-ancestor">
           <g:each in="${row}" var="suggestion">
           <div class="tile is-parent is-4 suggestion">

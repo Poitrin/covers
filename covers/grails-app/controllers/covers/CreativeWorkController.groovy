@@ -6,6 +6,7 @@ import static org.springframework.http.HttpStatus.*
 class CreativeWorkController {
 
   CreativeWorkService creativeWorkService
+  UtilityService utilityService
 
   static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -13,11 +14,19 @@ class CreativeWorkController {
     params.max = Math.min(max ?: 10, 100)
     params.sort = "id"
     params.order = "desc"
-    respond creativeWorkService.list(params), model: [creativeWorkCount: creativeWorkService.count()]
+
+    def currentUserIpAddressHash = utilityService.getCurrentUserIpAddressHash(request)
+
+    respond creativeWorkService.findAllByApprovedOrIpAddressHash(true, currentUserIpAddressHash),
+      model: [creativeWorkCount: creativeWorkService.count()]
   }
 
   def show(Long id) {
-    respond creativeWorkService.get(id), model: [part: new Part(), suggestion: new Suggestion()]
+    respond creativeWorkService.get(id), model: [
+      part: new Part(),
+      suggestion: new Suggestion(),
+      currentUserIpAddressHash: utilityService.getCurrentUserIpAddressHash(request)
+    ]
   }
 
   def create() {
@@ -29,6 +38,8 @@ class CreativeWorkController {
       notFound()
       return
     }
+
+    creativeWork.ipAddressHash = utilityService.getCurrentUserIpAddressHash(request)
 
     try {
       creativeWorkService.save(creativeWork)

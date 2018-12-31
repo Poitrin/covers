@@ -3,6 +3,15 @@ package covers
 class CreativeWork {
   String artist
   String title
+  Boolean approved = false
+
+  // Timestamps
+  // From the doc: By default when you have properties called dateCreated and/or lastUpdated in a domain class,
+  // Grails automatically maintains their state in the database
+  Date dateCreated
+  Date lastUpdated
+
+  String ipAddressHash
 
   static constraints = {
     artist blank: false
@@ -11,8 +20,17 @@ class CreativeWork {
 
   static hasMany = [parts: Part]
 
-  // Sometimes sorting only works after restarting (and recompiling) the app
+  Part[] approvedParts(String ipAddressHash) {
+    if (ipAddressHash == null) {
+      throw new RuntimeException("ipAddressHash must not be null")
+    }
+    // TODO: Use Grails criteria oder something else to filter via SQL instead of Groovy
+    return this.parts.findAll { it.approved || (it.ipAddressHash == ipAddressHash) }
+  }
+
   static mapping = {
+    approved defaultValue: "false"
+    // Sometimes sorting only works after restarting (and recompiling) the app
     parts sort: 'id', order: 'asc'
   }
 }

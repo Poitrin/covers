@@ -7,6 +7,7 @@ class PartController {
 
   PartService partService
   CreativeWorkService creativeWorkService
+  UtilityService utilityService
 
   static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
@@ -16,16 +17,20 @@ class PartController {
       return
     }
 
+    def currentUserIpAddressHash = utilityService.getCurrentUserIpAddressHash(request)
+
     // TODO: Wie command object?
     Part part = new Part()
     part.creativeWork = creativeWork
     part.name = name
+    part.ipAddressHash = currentUserIpAddressHash
     part.validate()
 
     if (part.hasErrors()) {
       respond part.errors, view: '/creativeWork/show', model: [
         creativeWork: creativeWork,
-        suggestion: new Suggestion()
+        suggestion: new Suggestion(),
+        currentUserIpAddressHash: currentUserIpAddressHash
       ]
       return
     }
