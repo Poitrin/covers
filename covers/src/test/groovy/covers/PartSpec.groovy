@@ -5,14 +5,16 @@ import spock.lang.Specification
 
 class PartSpec extends Specification implements DomainUnitTest<Part> {
 
-    def setup() {
-    }
+  def setup() {
+  }
 
-    def cleanup() {
-    }
+  def cleanup() {
+  }
 
-    void "test something"() {
-        expect:"fix me"
-            true == false
-    }
+  /*
+  void "test something"() {
+    expect:"fix me"
+      true == false
+  }
+  */
 }

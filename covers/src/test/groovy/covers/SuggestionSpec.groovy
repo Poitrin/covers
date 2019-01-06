@@ -11,8 +11,10 @@ class SuggestionSpec extends Specification implements DomainUnitTest<Suggestion>
     def cleanup() {
     }
 
+    /*
     void "test something"() {
         expect:"fix me"
             true == false
     }
+    */
 }

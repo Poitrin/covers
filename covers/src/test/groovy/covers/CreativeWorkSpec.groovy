@@ -11,8 +11,10 @@ class CreativeWorkSpec extends Specification implements DomainUnitTest<CreativeW
     def cleanup() {
     }
 
+    /*
     void "test something"() {
         expect:"fix me"
             true == false
     }
+    */
 }
