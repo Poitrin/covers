@@ -25,10 +25,10 @@ class CreativeWorkServiceSpec extends Specification {
   }
 
   void "test get"() {
-    setupData()
+    Long creativeWorkId = setupData()
 
     expect:
-    creativeWorkService.get(1) != null
+    creativeWorkService.get(creativeWorkId) != null
   }
 
   void "test list"() {
@@ -39,7 +39,7 @@ class CreativeWorkServiceSpec extends Specification {
 
     then:
     creativeWorkList.size() == 2
-    // assert false, "TODO: Verify the correct instances are returned"
+    // TODO: Verify the correct instances are returned
   }
 
   void "test count"() {

@@ -48,51 +48,51 @@ class PartController {
   }
 
   def update(Part part) {
-      if (part == null) {
-          notFound()
-          return
-      }
+    if (part == null) {
+      notFound()
+      return
+    }
 
-      try {
-          partService.save(part)
-      } catch (ValidationException e) {
-          respond part.errors, view:'edit'
-          return
-      }
+    try {
+      partService.save(part)
+    } catch (ValidationException e) {
+      respond part.errors, view:'edit'
+      return
+    }
 
-      request.withFormat {
-          form multipartForm {
-              flash.message = message(code: 'default.updated.message', args: [message(code: 'part.label', default: 'Part'), part.id])
-              redirect part
-          }
-          '*'{ respond part, [status: OK] }
+    request.withFormat {
+      form multipartForm {
+          flash.message = message(code: 'default.updated.message', args: [message(code: 'part.label', default: 'Part'), part.id])
+          redirect part
       }
+      '*'{ respond part, [status: OK] }
+    }
   }
 
   def delete(Long id) {
-      if (id == null) {
-          notFound()
-          return
-      }
+    if (id == null) {
+      notFound()
+      return
+    }
 
-      partService.delete(id)
+    partService.delete(id)
 
-      request.withFormat {
-          form multipartForm {
-              flash.message = message(code: 'default.deleted.message', args: [message(code: 'part.label', default: 'Part'), id])
-              redirect action:"index", method:"GET"
-          }
-          '*'{ render status: NO_CONTENT }
+    request.withFormat {
+      form multipartForm {
+        flash.message = message(code: 'default.deleted.message', args: [message(code: 'part.label', default: 'Part'), id])
+        redirect action:"index", method:"GET"
       }
+      '*'{ render status: NO_CONTENT }
+    }
   }
 
   protected void notFound() {
-      request.withFormat {
-          form multipartForm {
-              flash.message = message(code: 'default.not.found.message', args: [message(code: 'part.label', default: 'Part'), params.id])
-              redirect action: "index", method: "GET"
-          }
-          '*'{ render status: NOT_FOUND }
+    request.withFormat {
+      form multipartForm {
+        flash.message = message(code: 'default.not.found.message', args: [message(code: 'part.label', default: 'Part'), params.id])
+        redirect action: "index", method: "GET"
       }
+      '*'{ render status: NOT_FOUND }
+    }
   }
 }

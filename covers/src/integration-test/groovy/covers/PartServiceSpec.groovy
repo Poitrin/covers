@@ -9,66 +9,77 @@ import org.hibernate.SessionFactory
 @Rollback
 class PartServiceSpec extends Specification {
 
-    PartService partService
-    SessionFactory sessionFactory
+  PartService partService
+  SessionFactory sessionFactory
 
-    private Long setupData() {
-        // TODO: Populate valid domain instances and return a valid ID
-        //new Part(...).save(flush: true, failOnError: true)
-        //new Part(...).save(flush: true, failOnError: true)
-        //Part part = new Part(...).save(flush: true, failOnError: true)
-        //new Part(...).save(flush: true, failOnError: true)
-        //new Part(...).save(flush: true, failOnError: true)
-        assert false, "TODO: Provide a setupData() implementation for this generated test suite"
-        //part.id
-    }
+  static final MOCK_IP_ADDRESS_HASH = '-1234567';
 
-    void "test get"() {
-        setupData()
+  private Long setupData() {
+    CreativeWork creativeWork = new CreativeWork(
+        title: 'The Show Must Go On',
+        artist: 'Queen',
+        ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new Part(creativeWork: creativeWork, name: 'Piano at the beginning', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new Part(creativeWork: creativeWork, name: 'Synth guitar in the middle', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    Part part = new Part(creativeWork: creativeWork, name: 'Synth lead at the end', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new Part(creativeWork: creativeWork, name: 'Vocal effect', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new Part(creativeWork: creativeWork, name: 'Electric piano in the middle', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    
+    part.id
+  }
 
-        expect:
-        partService.get(1) != null
-    }
+  void "test get"() {
+    Long creativeWorkId = setupData()
 
-    void "test list"() {
-        setupData()
+    expect:
+    partService.get(creativeWorkId) != null
+  }
 
-        when:
-        List<Part> partList = partService.list(max: 2, offset: 2)
+  void "test list"() {
+    setupData()
 
-        then:
-        partList.size() == 2
-        assert false, "TODO: Verify the correct instances are returned"
-    }
+    when:
+    List<Part> partList = partService.list(max: 2, offset: 2)
 
-    void "test count"() {
-        setupData()
+    then:
+    partList.size() == 2
+    // TODO: Verify the correct instances are returned
+  }
 
-        expect:
-        partService.count() == 5
-    }
+  void "test count"() {
+    setupData()
 
-    void "test delete"() {
-        Long partId = setupData()
+    expect:
+    partService.count() == 5
+  }
 
-        expect:
-        partService.count() == 5
+  void "test delete"() {
+    Long partId = setupData()
 
-        when:
-        partService.delete(partId)
-        sessionFactory.currentSession.flush()
+    expect:
+    partService.count() == 5
 
-        then:
-        partService.count() == 4
-    }
+    when:
+    partService.delete(partId)
+    sessionFactory.currentSession.flush()
 
-    void "test save"() {
-        when:
-        assert false, "TODO: Provide a valid instance to save"
-        Part part = new Part()
-        partService.save(part)
+    then:
+    partService.count() == 4
+  }
 
-        then:
-        part.id != null
-    }
+  void "test save"() {
+    when:
+    CreativeWork creativeWork = new CreativeWork(
+      title: 'The Show Must Go On',
+      artist: 'Queen',
+      ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    Part part = new Part(
+      creativeWork: creativeWork,
+      name: 'Piano at the beginning',
+      ipAddressHash: MOCK_IP_ADDRESS_HASH)
+    partService.save(part)
+
+    then:
+    part.id != null
+  }
 }
