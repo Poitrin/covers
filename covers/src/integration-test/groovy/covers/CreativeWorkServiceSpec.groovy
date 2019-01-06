@@ -9,66 +9,66 @@ import org.hibernate.SessionFactory
 @Rollback
 class CreativeWorkServiceSpec extends Specification {
 
-    CreativeWorkService creativeWorkService
-    SessionFactory sessionFactory
+  CreativeWorkService creativeWorkService
+  SessionFactory sessionFactory
 
-    private Long setupData() {
-        // TODO: Populate valid domain instances and return a valid ID
-        //new CreativeWork(...).save(flush: true, failOnError: true)
-        //new CreativeWork(...).save(flush: true, failOnError: true)
-        //CreativeWork creativeWork = new CreativeWork(...).save(flush: true, failOnError: true)
-        //new CreativeWork(...).save(flush: true, failOnError: true)
-        //new CreativeWork(...).save(flush: true, failOnError: true)
-        assert false, "TODO: Provide a setupData() implementation for this generated test suite"
-        //creativeWork.id
-    }
+  static final MOCK_IP_ADDRESS_HASH = '-1234567';
 
-    void "test get"() {
-        setupData()
+  private Long setupData() {
+    new CreativeWork(title: 'The Show Must Go On', artist: 'Queen', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'The Winner Takes It All', artist: 'ABBA', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    CreativeWork creativeWork = new CreativeWork(title: "It's My Life", artist: 'Bon Jovi', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'Can You Feel The Love Tonight', artist: 'Elton John', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'Imagine', artist: 'John Lennon', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    
+    creativeWork.id
+  }
 
-        expect:
-        creativeWorkService.get(1) != null
-    }
+  void "test get"() {
+    setupData()
 
-    void "test list"() {
-        setupData()
+    expect:
+    creativeWorkService.get(1) != null
+  }
 
-        when:
-        List<CreativeWork> creativeWorkList = creativeWorkService.list(max: 2, offset: 2)
+  void "test list"() {
+    setupData()
 
-        then:
-        creativeWorkList.size() == 2
-        assert false, "TODO: Verify the correct instances are returned"
-    }
+    when:
+    List<CreativeWork> creativeWorkList = creativeWorkService.list(max: 2, offset: 2)
 
-    void "test count"() {
-        setupData()
+    then:
+    creativeWorkList.size() == 2
+    // assert false, "TODO: Verify the correct instances are returned"
+  }
 
-        expect:
-        creativeWorkService.count() == 5
-    }
+  void "test count"() {
+    setupData()
 
-    void "test delete"() {
-        Long creativeWorkId = setupData()
+    expect:
+    creativeWorkService.count() == 5
+  }
 
-        expect:
-        creativeWorkService.count() == 5
+  void "test delete"() {
+    Long creativeWorkId = setupData()
 
-        when:
-        creativeWorkService.delete(creativeWorkId)
-        sessionFactory.currentSession.flush()
+    expect:
+    creativeWorkService.count() == 5
 
-        then:
-        creativeWorkService.count() == 4
-    }
+    when:
+    creativeWorkService.delete(creativeWorkId)
+    sessionFactory.currentSession.flush()
 
-    void "test save"() {
-        when:
-        assert false, "TODO: Provide a valid instance to save"
-        CreativeWork creativeWork = new CreativeWork()
-        creativeWorkService.save(creativeWork)
+    then:
+    creativeWorkService.count() == 4
+  }
 
-        then:
-        creativeWork.id != null
-    }
+  void "test save"() {
+    when:
+    CreativeWork creativeWork = new CreativeWork(title: 'Mamma Mia', artist: 'ABBA', ipAddressHash: MOCK_IP_ADDRESS_HASH)
+    creativeWorkService.save(creativeWork)
+
+    then:
+    creativeWork.id != null
+  }
 }
