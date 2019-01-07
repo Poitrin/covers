@@ -9,66 +9,85 @@ import org.hibernate.SessionFactory
 @Rollback
 class SuggestionServiceSpec extends Specification {
 
-    SuggestionService suggestionService
-    SessionFactory sessionFactory
+  SuggestionService suggestionService
+  SessionFactory sessionFactory
 
-    private Long setupData() {
-        // TODO: Populate valid domain instances and return a valid ID
-        //new Suggestion(...).save(flush: true, failOnError: true)
-        //new Suggestion(...).save(flush: true, failOnError: true)
-        //Suggestion suggestion = new Suggestion(...).save(flush: true, failOnError: true)
-        //new Suggestion(...).save(flush: true, failOnError: true)
-        //new Suggestion(...).save(flush: true, failOnError: true)
-        assert false, "TODO: Provide a setupData() implementation for this generated test suite"
-        //suggestion.id
-    }
+  static final MOCK_IP_ADDRESS_HASH = '-1234567'
 
-    void "test get"() {
-        setupData()
+  private Long setupData() {
+    CreativeWork creativeWork = new CreativeWork(
+      title: 'The Show Must Go On',
+      artist: 'Queen',
+      ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new Part(creativeWork: creativeWork, name: 'Synth guitar in the middle', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    Part part = new Part(creativeWork: creativeWork, name: 'Synth lead at the end', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
 
-        expect:
-        suggestionService.get(1) != null
-    }
+    new Suggestion(part: part, instrument: 'Virus TI, Preset 12345', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new Suggestion(part: part, instrument: 'Phoenix 4000, Preset 4.05', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    Suggestion suggestion = new Suggestion(part: part, instrument: 'Moog Synth, Preset XYZ', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new Suggestion(part: part, instrument: 'Nord Electro, Preset 3.14', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new Suggestion(part: part, instrument: 'Apple Logic Pro X, Ambient Electro', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
 
-    void "test list"() {
-        setupData()
+    suggestion.id
+  }
 
-        when:
-        List<Suggestion> suggestionList = suggestionService.list(max: 2, offset: 2)
+  void "test get"() {
+    Long suggestionId = setupData()
 
-        then:
-        suggestionList.size() == 2
-        assert false, "TODO: Verify the correct instances are returned"
-    }
+    expect:
+    suggestionService.get(suggestionId) != null
+  }
 
-    void "test count"() {
-        setupData()
+  void "test list"() {
+    setupData()
 
-        expect:
-        suggestionService.count() == 5
-    }
+    when:
+    List<Suggestion> suggestionList = suggestionService.list(max: 2, offset: 2)
 
-    void "test delete"() {
-        Long suggestionId = setupData()
+    then:
+    suggestionList.size() == 2
+    // TODO: Verify the correct instances are returned
+  }
 
-        expect:
-        suggestionService.count() == 5
+  void "test count"() {
+    setupData()
 
-        when:
-        suggestionService.delete(suggestionId)
-        sessionFactory.currentSession.flush()
+    expect:
+    suggestionService.count() == 5
+  }
 
-        then:
-        suggestionService.count() == 4
-    }
+  void "test delete"() {
+    Long suggestionId = setupData()
 
-    void "test save"() {
-        when:
-        assert false, "TODO: Provide a valid instance to save"
-        Suggestion suggestion = new Suggestion()
-        suggestionService.save(suggestion)
+    expect:
+    suggestionService.count() == 5
 
-        then:
-        suggestion.id != null
-    }
+    when:
+    suggestionService.delete(suggestionId)
+    sessionFactory.currentSession.flush()
+
+    then:
+    suggestionService.count() == 4
+  }
+
+  void "test save"() {
+    when:
+    CreativeWork creativeWork = new CreativeWork(
+      title: 'The Show Must Go On',
+      artist: 'Queen',
+      ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    Part part = new Part(
+      creativeWork: creativeWork,
+      name: 'Synth at the beginning',
+      ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    Suggestion suggestion = new Suggestion(
+      part: part,
+      instrument: 'Nord Electro, Preset 4',
+      ipAddressHash: MOCK_IP_ADDRESS_HASH)
+
+    suggestionService.save(suggestion)
+
+    then:
+    suggestion.id != null
+  }
 }

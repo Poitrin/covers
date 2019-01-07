@@ -12,13 +12,13 @@ class PartServiceSpec extends Specification {
   PartService partService
   SessionFactory sessionFactory
 
-  static final MOCK_IP_ADDRESS_HASH = '-1234567';
+  static final MOCK_IP_ADDRESS_HASH = '-1234567'
 
   private Long setupData() {
     CreativeWork creativeWork = new CreativeWork(
-        title: 'The Show Must Go On',
-        artist: 'Queen',
-        ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+      title: 'The Show Must Go On',
+      artist: 'Queen',
+      ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     new Part(creativeWork: creativeWork, name: 'Piano at the beginning', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     new Part(creativeWork: creativeWork, name: 'Synth guitar in the middle', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     Part part = new Part(creativeWork: creativeWork, name: 'Synth lead at the end', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
@@ -75,7 +75,7 @@ class PartServiceSpec extends Specification {
       ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     Part part = new Part(
       creativeWork: creativeWork,
-      name: 'Piano at the beginning',
+      name: 'Synth at the beginning',
       ipAddressHash: MOCK_IP_ADDRESS_HASH)
     partService.save(part)
 

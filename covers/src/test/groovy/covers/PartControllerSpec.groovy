@@ -84,7 +84,7 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
 
     controller.save(createCreativeWork(), "")
 
-    then:"The create view is rendered again with the correct model"
+    then:"The creativeWork/show view is rendered again with the correct model"
     model.creativeWork != null
     model.part != null
     view == '/creativeWork/show'

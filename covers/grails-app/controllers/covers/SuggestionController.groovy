@@ -29,7 +29,7 @@ class SuggestionController {
 
     suggestion.part = part
     suggestion.instrument = params.instrument
-    suggestion.ipAddressHash = utilityService.getCurrentUserIpAddressHash(request)
+    suggestion.ipAddressHash = currentUserIpAddressHash
     suggestion.validate() // ... so that we can extract the errors
 
     if (suggestion.hasErrors()) {
@@ -54,51 +54,51 @@ class SuggestionController {
   }
 
   def update(Suggestion suggestion) {
-      if (suggestion == null) {
-          notFound()
-          return
-      }
+    if (suggestion == null) {
+      notFound()
+      return
+    }
 
-      try {
-          suggestionService.save(suggestion)
-      } catch (ValidationException e) {
-          respond suggestion.errors, view:'edit'
-          return
-      }
+    try {
+      suggestionService.save(suggestion)
+    } catch (ValidationException e) {
+      respond suggestion.errors, view:'edit'
+      return
+    }
 
-      request.withFormat {
-          form multipartForm {
-              flash.message = message(code: 'default.updated.message', args: [message(code: 'suggestion.label', default: 'Suggestion'), suggestion.id])
-              redirect suggestion
-          }
-          '*'{ respond suggestion, [status: OK] }
+    request.withFormat {
+      form multipartForm {
+        flash.message = message(code: 'default.updated.message', args: [message(code: 'suggestion.label', default: 'Suggestion'), suggestion.id])
+        redirect suggestion
       }
+      '*'{ respond suggestion, [status: OK] }
+    }
   }
 
   def delete(Long id) {
-      if (id == null) {
-          notFound()
-          return
-      }
+    if (id == null) {
+      notFound()
+      return
+    }
 
-      suggestionService.delete(id)
+    suggestionService.delete(id)
 
-      request.withFormat {
-          form multipartForm {
-              flash.message = message(code: 'default.deleted.message', args: [message(code: 'suggestion.label', default: 'Suggestion'), id])
-              redirect action:"index", method:"GET"
-          }
-          '*'{ render status: NO_CONTENT }
+    request.withFormat {
+      form multipartForm {
+        flash.message = message(code: 'default.deleted.message', args: [message(code: 'suggestion.label', default: 'Suggestion'), id])
+        redirect action:"index", method:"GET"
       }
+      '*'{ render status: NO_CONTENT }
+    }
   }
 
   protected void notFound() {
-      request.withFormat {
-          form multipartForm {
-              flash.message = message(code: 'default.not.found.message', args: [message(code: 'suggestion.label', default: 'Suggestion'), params.id])
-              redirect action: "index", method: "GET"
-          }
-          '*'{ render status: NOT_FOUND }
+    request.withFormat {
+      form multipartForm {
+        flash.message = message(code: 'default.not.found.message', args: [message(code: 'suggestion.label', default: 'Suggestion'), params.id])
+        redirect action: "index", method: "GET"
       }
+      '*'{ render status: NOT_FOUND }
+    }
   }
 }
