@@ -13,4 +13,4 @@ cache:
 script:
   - docker-compose build
   # - docker-compose run --rm grails /grails/bin/grails test-app
-  - docker-compose run --rm grails gradle test
+  - docker-compose run --rm test

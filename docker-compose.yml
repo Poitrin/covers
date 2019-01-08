@@ -21,13 +21,23 @@ services:
     # environment:
     #   GRAILS_HOME: "/grails"
     volumes:
-    #  - ./grails:/grails
+      - ./grails:/grails
       - ./home:/root
       - .:/covers
     ports:
       - "8080:8080"
     depends_on:
       - db
-      - dbtest
     working_dir: "/covers"
     command: "gradle bootRun"
+  test:
+    image: gradle:jdk8
+    volumes:
+      - ./home:/root
+      - .:/covers
+    ports:
+      - "8080:8080"
+    depends_on:
+      - dbtest
+    working_dir: "/covers"
+    command: "gradle test"
