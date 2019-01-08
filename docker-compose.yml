@@ -21,8 +21,8 @@ services:
       GRAILS_HOME: "/grails"
     volumes:
       - ./grails:/grails
-      - ./covers:/covers
       - ./home:/root
+      - .:/covers
     ports:
       - "8080:8080"
     depends_on:
