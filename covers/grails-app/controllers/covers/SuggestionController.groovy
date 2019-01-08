@@ -13,7 +13,7 @@ class SuggestionController {
   static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
 
   def save() {
-    // TODO: lesen aus Command objects?
+    // TODO: How can information be extracted from command object?
     CreativeWork creativeWork = creativeWorkService.get(params.creativeWorkId)
     Part part = partService.get(params.partId)
 
@@ -21,7 +21,7 @@ class SuggestionController {
 
     def currentUserIpAddressHash = utilityService.getCurrentUserIpAddressHash(request)
 
-    // TODO: wenn aus Command objects ausgelesen wird...
+    // TODO: The following code will be needed if information is extracted from command object
     if (suggestion == null) {
       notFound()
       return

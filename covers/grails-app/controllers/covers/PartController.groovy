@@ -19,7 +19,7 @@ class PartController {
 
     def currentUserIpAddressHash = utilityService.getCurrentUserIpAddressHash(request)
 
-    // TODO: Wie command object?
+    // TODO: How can Part information be extracted from command object?
     Part part = new Part()
     part.creativeWork = creativeWork
     part.name = name
@@ -47,6 +47,8 @@ class PartController {
     }
   }
 
+  /*
+  TODO: Update and delete are not usable yet via the UI
   def update(Part part) {
     if (part == null) {
       notFound()
@@ -85,6 +87,7 @@ class PartController {
       '*'{ render status: NO_CONTENT }
     }
   }
+  */
 
   protected void notFound() {
     request.withFormat {

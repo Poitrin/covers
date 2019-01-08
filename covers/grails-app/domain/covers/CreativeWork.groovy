@@ -20,6 +20,10 @@ class CreativeWork {
 
   static hasMany = [parts: Part]
 
+  /**
+   * Returns all parts that the current user is allowed to see.
+   * These are the parts that have been approved, or that have been created by the current user (same IP address, hashed)
+   */
   Part[] approvedParts(String ipAddressHash) {
     if (ipAddressHash == null) {
       throw new RuntimeException("ipAddressHash must not be null")

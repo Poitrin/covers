@@ -9,7 +9,9 @@
     <div id="list-creativeWork" class="content scaffold-list" role="main">
       <h1><g:message code="creativeWork.list.label" /></h1>
       <g:if test="${flash.message}">
-        <div class="message" role="status">${flash.message}</div>
+        <div class="message is-success">
+          <div class="message-body">${flash.message}</div>
+        </div>
       </g:if>
 
       <!-- Note: When creativeWorkList is empty, "[null, *creativeWorkList]" would display 2 "Create new creative work" links -->

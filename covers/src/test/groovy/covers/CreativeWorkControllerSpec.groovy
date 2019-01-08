@@ -8,10 +8,10 @@ import spock.lang.*
 class CreativeWorkControllerSpec extends Specification implements ControllerUnitTest<CreativeWorkController>, DomainUnitTest<CreativeWork> {
 
   def populateValidParams(params) {
-      assert params != null
+    assert params != null
 
-      params["title"] = 'The Show Must Go On'
-      params["artist"] = 'Queen'
+    params["title"] = 'The Show Must Go On'
+    params["artist"] = 'Queen'
   }
 
   void "Test the index action returns the correct model"() {
@@ -41,14 +41,14 @@ class CreativeWorkControllerSpec extends Specification implements ControllerUnit
   }
 
   void "Test the save action with a null instance"() {
-      when:"Save is called for a domain instance that doesn't exist"
-      request.contentType = FORM_CONTENT_TYPE
-      request.method = 'POST'
-      controller.save(null)
+    when:"Save is called for a domain instance that doesn't exist"
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'POST'
+    controller.save(null)
 
-      then:"A 404 error is returned"
-      response.redirectedUrl == '/creativeWorks'
-      flash.message != null
+    then:"A 404 error is returned"
+    response.redirectedUrl == '/creativeWorks'
+    flash.message != null
   }
 
   void "Test the save action correctly persists"() {
@@ -131,80 +131,80 @@ class CreativeWorkControllerSpec extends Specification implements ControllerUnit
   }
 
   void "Test the edit action with a null id"() {
-      given:
-      controller.creativeWorkService = Mock(CreativeWorkService) {
-          1 * get(null) >> null
-      }
+    given:
+    controller.creativeWorkService = Mock(CreativeWorkService) {
+      1 * get(null) >> null
+    }
 
-      when:"The show action is executed with a null domain"
-      controller.edit(null)
+    when:"The show action is executed with a null domain"
+    controller.edit(null)
 
-      then:"A 404 error is returned"
-      response.status == 404
+    then:"A 404 error is returned"
+    response.status == 404
   }
 
   void "Test the edit action with a valid id"() {
-      given:
-      controller.creativeWorkService = Mock(CreativeWorkService) {
-          1 * get(2) >> new CreativeWork()
-      }
+    given:
+    controller.creativeWorkService = Mock(CreativeWorkService) {
+      1 * get(2) >> new CreativeWork()
+    }
 
-      when:"A domain instance is passed to the show action"
-      controller.edit(2)
+    when:"A domain instance is passed to the show action"
+    controller.edit(2)
 
-      then:"A model is populated containing the domain instance"
-      model.creativeWork instanceof CreativeWork
+    then:"A model is populated containing the domain instance"
+    model.creativeWork instanceof CreativeWork
   }
 
 
   void "Test the update action with a null instance"() {
-      when:"Save is called for a domain instance that doesn't exist"
-      request.contentType = FORM_CONTENT_TYPE
-      request.method = 'PUT'
-      controller.update(null)
+    when:"Save is called for a domain instance that doesn't exist"
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'PUT'
+    controller.update(null)
 
-      then:"A 404 error is returned"
-      response.redirectedUrl == '/creativeWorks'
-      flash.message != null
+    then:"A 404 error is returned"
+    response.redirectedUrl == '/creativeWorks'
+    flash.message != null
   }
 
   void "Test the update action correctly persists"() {
-      given:
-      controller.creativeWorkService = Mock(CreativeWorkService) {
-          1 * save(_ as CreativeWork)
-      }
+    given:
+    controller.creativeWorkService = Mock(CreativeWorkService) {
+      1 * save(_ as CreativeWork)
+    }
 
-      when:"The save action is executed with a valid instance"
-      response.reset()
-      request.contentType = FORM_CONTENT_TYPE
-      request.method = 'PUT'
-      populateValidParams(params)
-      def creativeWork = new CreativeWork(params)
-      creativeWork.id = 1
+    when:"The save action is executed with a valid instance"
+    response.reset()
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'PUT'
+    populateValidParams(params)
+    def creativeWork = new CreativeWork(params)
+    creativeWork.id = 1
 
-      controller.update(creativeWork)
+    controller.update(creativeWork)
 
-      then:"A redirect is issued to the show action"
-      response.redirectedUrl == '/creativeWorks/1'
-      controller.flash.message != null
+    then:"A redirect is issued to the show action"
+    response.redirectedUrl == '/creativeWorks/1'
+    controller.flash.message != null
   }
 
   void "Test the update action with an invalid instance"() {
-      given:
-      controller.creativeWorkService = Mock(CreativeWorkService) {
-          1 * save(_ as CreativeWork) >> { CreativeWork creativeWork ->
-              throw new ValidationException("Invalid instance", creativeWork.errors)
-          }
+    given:
+    controller.creativeWorkService = Mock(CreativeWorkService) {
+      1 * save(_ as CreativeWork) >> { CreativeWork creativeWork ->
+        throw new ValidationException("Invalid instance", creativeWork.errors)
       }
+    }
 
-      when:"The save action is executed with an invalid instance"
-      request.contentType = FORM_CONTENT_TYPE
-      request.method = 'PUT'
-      controller.update(new CreativeWork())
+    when:"The save action is executed with an invalid instance"
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'PUT'
+    controller.update(new CreativeWork())
 
-      then:"The edit view is rendered again with the correct model"
-      model.creativeWork != null
-      view == 'edit'
+    then:"The edit view is rendered again with the correct model"
+    model.creativeWork != null
+    view == 'edit'
   }
 
   void "Test the delete action with a null instance"() {
@@ -219,19 +219,19 @@ class CreativeWorkControllerSpec extends Specification implements ControllerUnit
   }
 
   void "Test the delete action with an instance"() {
-      given:
-      controller.creativeWorkService = Mock(CreativeWorkService) {
-          1 * delete(2)
-      }
+    given:
+    controller.creativeWorkService = Mock(CreativeWorkService) {
+      1 * delete(2)
+    }
 
-      when:"The domain instance is passed to the delete action"
-      request.contentType = FORM_CONTENT_TYPE
-      request.method = 'DELETE'
-      controller.delete(2)
+    when:"The domain instance is passed to the delete action"
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'DELETE'
+    controller.delete(2)
 
-      then:"The user is redirected to index"
-      response.redirectedUrl == '/creativeWorks'
-      flash.message != null
+    then:"The user is redirected to index"
+    response.redirectedUrl == '/creativeWorks'
+    flash.message != null
   }
 }
 

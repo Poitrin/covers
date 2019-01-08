@@ -57,6 +57,8 @@ class CreativeWorkController {
     }
   }
 
+  /*
+  TODO: Update and delete are not usable yet via the UI
   def edit(Long id) {
     respond creativeWorkService.get(id)
   }
@@ -99,6 +101,7 @@ class CreativeWorkController {
       '*'{ render status: NO_CONTENT }
     }
   }
+  */
 
   protected void notFound() {
     request.withFormat {

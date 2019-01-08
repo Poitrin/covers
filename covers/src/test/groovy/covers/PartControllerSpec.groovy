@@ -122,7 +122,8 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
     thrown MissingMethodException
   }
 
-
+  /*
+  TODO: Update and delete are not usable yet via the UI
   void "Test the update action with a null instance"() {
     when:"Save is called for a domain instance that doesn't exist"
     request.contentType = FORM_CONTENT_TYPE
@@ -199,6 +200,7 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
     response.redirectedUrl == '/part/index'
     flash.message != null
   }
+  */
 }
 
 

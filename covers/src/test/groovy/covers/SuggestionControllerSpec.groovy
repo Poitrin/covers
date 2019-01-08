@@ -9,15 +9,7 @@ class SuggestionControllerSpec extends Specification implements ControllerUnitTe
   static final MOCK_PART_NAME = 'Piano at the beginning of the song'
   static final MOCK_IP_ADDRESS_HASH = '-1234567'
 
-  def populateValidParams(params) {
-    assert params != null
-
-    // TODO: Populate valid properties like...
-    //params["name"] = 'someValidName'
-    assert false, "TODO: Provide a populateValidParams() implementation for this generated test suite"
-  }
-
-  // TODO: has been copied from PartControllerSpec
+  // TODO: this has been copied from PartControllerSpec
   CreativeWork createCreativeWork() {
     CreativeWork creativeWork = new CreativeWork(
       title: 'Lady Madonna',
@@ -54,7 +46,7 @@ class SuggestionControllerSpec extends Specification implements ControllerUnitTe
     thrown MissingMethodException
   }
 
-  // TODO: wenn Suggestion im Controller später aus Command objects ausgelesen wird...
+  // TODO: If suggestion is read from command object ...
   /*
   void "Test the save action with a null instance"() {
     when:"Save is called for a domain instance that doesn't exist"
