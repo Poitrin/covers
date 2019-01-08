@@ -130,6 +130,8 @@ class CreativeWorkControllerSpec extends Specification implements ControllerUnit
     model.creativeWork instanceof CreativeWork
   }
 
+  /*
+  TODO: Update and delete are not usable yet via the UI
   void "Test the edit action with a null id"() {
     given:
     controller.creativeWorkService = Mock(CreativeWorkService) {
@@ -233,6 +235,7 @@ class CreativeWorkControllerSpec extends Specification implements ControllerUnit
     response.redirectedUrl == '/creativeWorks'
     flash.message != null
   }
+  */
 }
 
 
