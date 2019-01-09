@@ -1,8 +1,6 @@
-sudo: required
 services:
   - docker
 
-language: groovy
 before_cache:
   - rm -f $TRAVIS_BUILD_DIR/cache/caches/modules-2/modules-2.lock
 cache:
@@ -11,5 +9,4 @@ cache:
     - $TRAVIS_BUILD_DIR/cache/wrapper/
 
 script:
-  - docker-compose build
   - docker-compose run --rm test gradle test
