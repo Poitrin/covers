@@ -20,9 +20,9 @@ services:
     environment:
       GRAILS_HOME: "/grails"
     volumes:
-      - ./grails:/grails
-      - ./home:/root
       - .:/covers
+      - ./grails:/grails
+      - ./cache:/home/gradle/.gradle
     ports:
       - "8080:8080"
     depends_on:
@@ -32,8 +32,8 @@ services:
   test:
     image: gradle:3.5-jdk8
     volumes:
-      - ./home:/root
       - .:/covers
+      - ./cache:/home/gradle/.gradle
     ports:
       - "8080:8080"
     depends_on:

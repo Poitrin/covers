@@ -11,5 +11,5 @@ out/
 .settings
 .classpath
 
-home
+cache
 grails

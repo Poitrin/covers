@@ -4,13 +4,12 @@ services:
 
 language: groovy
 before_cache:
-  - rm -f $HOME/.gradle/caches/modules-2/modules-2.lock
+  - rm -f $TRAVIS_BUILD_DIR/cache/caches/modules-2/modules-2.lock
 cache:
   directories:
-    - $HOME/.gradle/caches/
-    - $HOME/.gradle/wrapper/
+    - $TRAVIS_BUILD_DIR/cache/caches/
+    - $TRAVIS_BUILD_DIR/cache/wrapper/
 
 script:
   - docker-compose build
-  # - docker-compose run --rm grails /grails/bin/grails test-app
-  - docker-compose run --rm test
+  - docker-compose run --rm test gradle test
