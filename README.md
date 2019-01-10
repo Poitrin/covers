@@ -1,3 +1,5 @@
+[![Build Status](https://travis-ci.com/Poitrin/covers.svg?branch=master)](https://travis-ci.com/Poitrin/covers)
+
 # Covers app
 This app has been developed for musicians who …
 * know which instruments (synths, samples, …) have been used (or can be used) in a song (piece, …) and want to share this information with other musicians
@@ -32,7 +34,7 @@ docker-compose up test
 
 ## To do / ideas
 ### General
-- [ ] Execute all tests via Travis CI (configure test DB, …)
+- [ ] Execute all tests via Travis CI (configure test DB, …), make sure entire build fails when test execution fails
 - [ ] Consistently use 2 spaces (instead of 4)
 - [ ] Convert source code TODOs into Github issues
 - [ ] Deploy the app so that it is public for all musicians in the world
