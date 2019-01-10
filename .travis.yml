@@ -11,4 +11,4 @@ services:
 #     - $TRAVIS_BUILD_DIR/cache/wrapper/
 
 script:
-  - docker-compose run --rm test gradle test
+  - docker-compose up test

@@ -22,7 +22,7 @@ services:
     volumes:
       - .:/covers
       - ./grails:/grails
-      # - ./cache:/home/gradle/.gradle
+      - ./cache:/home/gradle/.gradle
     ports:
       - "8080:8080"
     depends_on:
@@ -33,7 +33,7 @@ services:
     image: gradle:3.5-jdk8
     volumes:
       - .:/covers
-      # - ./cache:/home/gradle/.gradle
+      - ./cache:/home/gradle/.gradle
     ports:
       - "8080:8080"
     depends_on:

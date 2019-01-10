@@ -18,18 +18,13 @@ This app has been developed for musicians who …
 ## Installation
 If you have Docker (and docker-compose) installed, execute:
 ```
-docker-compose run --rm grails gradle bootRun
-```
-
-If you downloaded Grails from grails.org, and you copied the folder into ./grails, you can also use:
-```
-docker-compose run --rm grails /grails/bin/grails run-app
+docker-compose up grails
 ```
 
 ## Testing
 If you have Docker (and Docker compose) installed, execute:
 ```
-docker-compose run --rm test gradle test
+docker-compose up test
 ```
 
 ## Design decisions
