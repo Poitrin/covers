@@ -38,4 +38,4 @@ services:
     depends_on:
       - dbtest
     working_dir: "/covers"
-    command: "gradle test"
+    command: "gradle test integrationTest"
