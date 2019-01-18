@@ -34,7 +34,7 @@ docker-compose up test
 
 ## To do / ideas
 ### General
-- [ ] Execute all tests via Travis CI (configure test DB, …), make sure entire build fails when test execution fails
+- [x] Execute all tests via Travis CI (configure test DB, …), make sure entire build fails when test execution fails
 - [ ] Consistently use 2 spaces (instead of 4)
 - [ ] Convert source code TODOs into Github issues
 - [ ] Deploy the app so that it is public for all musicians in the world
