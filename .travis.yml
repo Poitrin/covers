@@ -1,15 +1,15 @@
 language: groovy
 
 services:
-  - docker
+  - postgresql
 
 before_cache:
   - rm -f $TRAVIS_BUILD_DIR/cache/caches/modules-2/modules-2.lock
+  - psql -c 'create database covers;' -U postgres
 cache:
   directories:
     - $TRAVIS_BUILD_DIR/cache/caches/
     - $TRAVIS_BUILD_DIR/cache/wrapper/
 
 script:
-  - docker-compose up --exit-code-from test --abort-on-container-exit test
-  - docker-compose down
+  -

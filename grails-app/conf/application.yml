@@ -107,10 +107,9 @@ environments:
   test:
     dataSource:
       dbCreate: create-drop
-      url: jdbc:postgresql://dbtest:5432/covers
+      url: jdbc:postgresql://localhost:5432/covers
       driverClassName: org.postgresql.Driver
       username: postgres
-      password: password
   production:
     dataSource:
       dbCreate: none
