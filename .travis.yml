@@ -1,14 +1,16 @@
 sudo: required
 
+language: groovy
+
 services:
   - docker
 
-# before_cache:
-#   - rm -f $TRAVIS_BUILD_DIR/cache/caches/modules-2/modules-2.lock
-# cache:
-#   directories:
-#     - $TRAVIS_BUILD_DIR/cache/caches/
-#     - $TRAVIS_BUILD_DIR/cache/wrapper/
+before_cache:
+  - rm -f $TRAVIS_BUILD_DIR/cache/caches/modules-2/modules-2.lock
+cache:
+  directories:
+    - $TRAVIS_BUILD_DIR/cache/caches/
+    - $TRAVIS_BUILD_DIR/cache/wrapper/
 
 script:
   - docker-compose up --exit-code-from test --abort-on-container-exit test
