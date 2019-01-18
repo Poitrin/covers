@@ -14,4 +14,4 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
-  - gradle test integrationTest
+  - gradle test integrationTest --info
