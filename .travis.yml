@@ -3,6 +3,10 @@ language: groovy
 services:
   - postgresql
 
+addons:
+  hosts:
+    - dbtest
+
 before_script:
   - psql -c 'create database covers;' -U postgres
 
