@@ -11,4 +11,5 @@ services:
 #     - $TRAVIS_BUILD_DIR/cache/wrapper/
 
 script:
-  - docker-compose up test
+  - docker-compose up --exit-code-from test --abort-on-container-exit test
+  - docker-compose down
