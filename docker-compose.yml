@@ -18,10 +18,10 @@ services:
     # Grails 3.3.8 does not support Java 10. You will have to use Java 7 or Java 8 if you want to use Grails 3.3.8.
     image: gradle:3.5-jdk8
     environment:
-      GRAILS_HOME: "/grails"
+      GRAILS_HOME: "/home/gradle/grails"
     volumes:
-      - .:/covers
-      - ./grails:/grails
+      - .:/home/gradle/covers
+      - ./grails:/home/gradle/grails
       - ./cache:/home/gradle/.gradle
     ports:
       - "8080:8080"
@@ -32,10 +32,10 @@ services:
   test:
     image: gradle:3.5-jdk8
     volumes:
-      - .:/covers
+      - .:/home/gradle/covers
     ports:
       - "8080:8080"
     depends_on:
       - dbtest
-    working_dir: "/covers"
+    working_dir: "/home/gradle/covers"
     command: "gradle test integrationTest"
