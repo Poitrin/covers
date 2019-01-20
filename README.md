@@ -20,7 +20,7 @@ This app has been developed for musicians who …
 ## Installation
 If you have Docker (and docker-compose) installed, execute:
 ```
-docker-compose up grails
+docker-compose up dev
 ```
 
 ## Testing
@@ -28,6 +28,9 @@ If you have Docker (and Docker compose) installed, execute:
 ```
 docker-compose up test
 ```
+
+## Deployment
+(still needs to be written)
 
 ## Design decisions
 (still needs to be written)
