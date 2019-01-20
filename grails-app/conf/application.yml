@@ -93,8 +93,6 @@ dataSource:
   jmxExport: true
   driverClassName: org.postgresql.Driver
   dialect: org.hibernate.dialect.PostgreSQLDialect
-  username: postgres
-  password: password
 
 environments:
   development:
@@ -114,7 +112,9 @@ environments:
   production:
     dataSource:
       dbCreate: none
-      url: jdbc:postgresql://db:5432/covers
+      url: jdbc:postgresql://127.0.0.1:5432/covers
+      username: ${DB_USERNAME}
+      password: ${DB_PASSWORD} 
       properties:
         jmxEnabled: true
         initialSize: 5
