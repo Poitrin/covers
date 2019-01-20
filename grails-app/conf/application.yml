@@ -93,6 +93,8 @@ dataSource:
   jmxExport: true
   driverClassName: org.postgresql.Driver
   dialect: org.hibernate.dialect.PostgreSQLDialect
+  username: postgres
+  password: password
 
 environments:
   development:
