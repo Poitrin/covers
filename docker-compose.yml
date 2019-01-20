@@ -14,7 +14,7 @@ services:
       POSTGRES_USER: postgres
       POSTGRES_DB: covers
       POSTGRES_PASSWORD: ""
-  grails:
+  dev: &dev
     # Grails 3.3.8 does not support Java 10. You will have to use Java 7 or Java 8 if you want to use Grails 3.3.8.
     image: gradle:3.5-jdk8
     environment:
@@ -27,7 +27,7 @@ services:
       - "8080:8080"
     depends_on:
       - db
-    working_dir: "/covers"
+    working_dir: "/home/gradle/covers"
     command: "gradle bootRun"
   test:
     image: gradle:3.5-jdk8
@@ -40,3 +40,6 @@ services:
       - dbtest
     working_dir: "/home/gradle/covers"
     command: "gradle test integrationTest --info"
+  prod:
+    <<: *dev
+    command: "gradle -Dgrails.env=prod bootRun"

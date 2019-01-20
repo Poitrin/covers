@@ -114,7 +114,7 @@ environments:
   production:
     dataSource:
       dbCreate: none
-      url: jdbc:h2:./prodDb;MVCC=TRUE;LOCK_TIMEOUT=10000;DB_CLOSE_ON_EXIT=FALSE
+      url: jdbc:postgresql://db:5432/covers
       properties:
         jmxEnabled: true
         initialSize: 5
