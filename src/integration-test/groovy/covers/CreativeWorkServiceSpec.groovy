@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory
 class CreativeWorkServiceSpec extends Specification {
 
   CreativeWorkService creativeWorkService
+  UtilityService utilityService
   SessionFactory sessionFactory
 
   static final MOCK_IP_ADDRESS_HASH = '-1234567';
@@ -47,6 +48,21 @@ class CreativeWorkServiceSpec extends Specification {
 
     expect:
     creativeWorkService.count() == 5
+  }
+
+  void "test countByDateCreatedGreaterThan"() {
+    setupData()
+
+    expect:
+    creativeWorkService.countByDateCreatedGreaterThan(utilityService.LAST_MIDNIGHT) == 5
+  }
+
+  void "test countByIpAddressHashAndDateCreatedGreaterThan"() {
+    setupData()
+
+    expect:
+    creativeWorkService.countByIpAddressHashAndDateCreatedGreaterThan(MOCK_IP_ADDRESS_HASH, utilityService.LAST_MIDNIGHT) == 5
+    creativeWorkService.countByIpAddressHashAndDateCreatedGreaterThan('-5275184', utilityService.LAST_MIDNIGHT) == 0
   }
 
   void "test delete"() {

@@ -71,6 +71,10 @@ class SuggestionControllerSpec extends Specification implements ControllerUnitTe
       1 * get(_) >> part
       1 * save(_)
     }
+    controller.suggestionService = Mock(SuggestionService) {
+      1 * countByDateCreatedGreaterThan(_) >> 0
+      1 * countByIpAddressHashAndDateCreatedGreaterThan(_, _) >> 0
+    }
     controller.utilityService = Mock(UtilityService) {
       1 * getCurrentUserIpAddressHash(_) >> MOCK_IP_ADDRESS_HASH
     }
@@ -101,6 +105,10 @@ class SuggestionControllerSpec extends Specification implements ControllerUnitTe
     controller.partService = Mock(PartService) {
       1 * get(_) >> part
     }
+    controller.suggestionService = Mock(SuggestionService) {
+      1 * countByDateCreatedGreaterThan(_) >> 0
+      1 * countByIpAddressHashAndDateCreatedGreaterThan(_, _) >> 0
+    }
     controller.utilityService = Mock(UtilityService) {
       1 * getCurrentUserIpAddressHash(_) >> MOCK_IP_ADDRESS_HASH
     }
@@ -120,6 +128,78 @@ class SuggestionControllerSpec extends Specification implements ControllerUnitTe
     model.part != null
     model.suggestion != null
     view == '/creativeWork/show'
+  }
+
+  void "Test the save action does not allow too many inserts per day"() {
+    given:
+    CreativeWork creativeWork = createCreativeWork()
+    Part part = createPart(creativeWork)
+    controller.creativeWorkService = Mock(CreativeWorkService) {
+      1 * get(_) >> creativeWork
+    }
+    controller.partService = Mock(PartService) {
+      1 * get(_) >> part
+      0 * save(_)
+    }
+    controller.suggestionService = Mock(SuggestionService) {
+      1 * countByDateCreatedGreaterThan(_) >> SuggestionController.MAX_ITEMS_ALLOWED_TODAY
+      0 * countByIpAddressHashAndDateCreatedGreaterThan(_, _) >> 0
+      0 * save(_ as Suggestion)
+    }
+    controller.utilityService = Mock(UtilityService) {
+      1 * getCurrentUserIpAddressHash(_) >> "-12345"
+    }
+
+    when:"The save action is executed with a valid instance"
+    response.reset()
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'POST'
+
+    params.creativeWorkId = creativeWork.id
+    params.partId = part.id
+    params.instrument = 'Nord Stage 3 - Grand Piano XL' // Suggestion
+
+    controller.save()
+
+    then:"A redirect is issued to the show action"
+    response.redirectedUrl == ('/creativeWorks/' + creativeWork.id)
+    controller.flash.message == 'default.too.many.requests.message'
+  }
+
+  void "Test the save action does not allow too many inserts by the same user per day"() {
+    given:
+    CreativeWork creativeWork = createCreativeWork()
+    Part part = createPart(creativeWork)
+    controller.creativeWorkService = Mock(CreativeWorkService) {
+      1 * get(_) >> creativeWork
+    }
+    controller.partService = Mock(PartService) {
+      1 * get(_) >> part
+      0 * save(_)
+    }
+    controller.suggestionService = Mock(SuggestionService) {
+      1 * countByDateCreatedGreaterThan(_) >> SuggestionController.MAX_ITEMS_ALLOWED_TODAY
+      0 * countByIpAddressHashAndDateCreatedGreaterThan(_, _) >> 0
+      0 * save(_ as Suggestion)
+    }
+    controller.utilityService = Mock(UtilityService) {
+      1 * getCurrentUserIpAddressHash(_) >> "-12345"
+    }
+
+    when:"The save action is executed with a valid instance"
+    response.reset()
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'POST'
+
+    params.creativeWorkId = creativeWork.id
+    params.partId = part.id
+    params.instrument = 'Nord Stage 3 - Grand Piano XL' // Suggestion
+
+    controller.save()
+
+    then:"A redirect is issued to the show action"
+    response.redirectedUrl == ('/creativeWorks/' + creativeWork.id)
+    controller.flash.message == 'default.too.many.requests.message'
   }
 
   void "Test the show action with a null id"() {

@@ -14,6 +14,8 @@ interface CreativeWorkService {
   List<CreativeWork> findAllByApprovedOrIpAddressHash(Boolean approved, String ipAddressHash)
 
   Long count()
+  Long countByDateCreatedGreaterThan(Date dateCreated)
+  Long countByIpAddressHashAndDateCreatedGreaterThan(String ipAddressHash, Date dateCreated)
 
   void delete(Serializable id)
 

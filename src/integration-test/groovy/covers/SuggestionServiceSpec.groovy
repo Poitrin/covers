@@ -10,6 +10,7 @@ import org.hibernate.SessionFactory
 class SuggestionServiceSpec extends Specification {
 
   SuggestionService suggestionService
+  UtilityService utilityService
   SessionFactory sessionFactory
 
   static final MOCK_IP_ADDRESS_HASH = '-1234567'
@@ -54,6 +55,21 @@ class SuggestionServiceSpec extends Specification {
 
     expect:
     suggestionService.count() == 5
+  }
+
+  void "test countByDateCreatedGreaterThan"() {
+    setupData()
+
+    expect:
+    suggestionService.countByDateCreatedGreaterThan(utilityService.LAST_MIDNIGHT) == 5
+  }
+
+  void "test countByIpAddressHashAndDateCreatedGreaterThan"() {
+    setupData()
+
+    expect:
+    suggestionService.countByIpAddressHashAndDateCreatedGreaterThan(MOCK_IP_ADDRESS_HASH, utilityService.LAST_MIDNIGHT) == 5
+    suggestionService.countByIpAddressHashAndDateCreatedGreaterThan('-5275184', utilityService.LAST_MIDNIGHT) == 0
   }
 
   void "test delete"() {

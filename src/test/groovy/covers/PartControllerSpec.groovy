@@ -55,6 +55,10 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
     controller.creativeWorkService = Mock(CreativeWorkService) {
       1 * save(_ as CreativeWork)
     }
+    controller.partService = Mock(PartService) {
+      1 * countByDateCreatedGreaterThan(_) >> 0
+      1 * countByIpAddressHashAndDateCreatedGreaterThan(_, _) >> 0
+    }
     controller.utilityService = Mock(UtilityService) {
       1 * getCurrentUserIpAddressHash(_) >> MOCK_IP_ADDRESS_HASH
     }
@@ -74,6 +78,10 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
 
   void "Test the save action with an invalid instance"() {
     given:
+    controller.partService = Mock(PartService) {
+      1 * countByDateCreatedGreaterThan(_) >> 0
+      1 * countByIpAddressHashAndDateCreatedGreaterThan(_, _) >> 0
+    }
     controller.utilityService = Mock(UtilityService) {
       1 * getCurrentUserIpAddressHash(_) >> MOCK_IP_ADDRESS_HASH
     }
@@ -88,7 +96,55 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
     model.creativeWork != null
     model.part != null
     view == '/creativeWork/show'
-}
+  }
+
+  void "Test the save action does not allow too many inserts per day"() {
+    given:
+    controller.partService = Mock(PartService) {
+      1 * countByDateCreatedGreaterThan(_) >> PartController.MAX_ITEMS_ALLOWED_TODAY
+      0 * countByIpAddressHashAndDateCreatedGreaterThan(_, _) >> 0
+      0 * save(_ as Part)
+    }
+    controller.utilityService = Mock(UtilityService) {
+      1 * getCurrentUserIpAddressHash(_) >> "-12345"
+    }
+
+    when:"The save action is executed with a valid instance"
+    response.reset()
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'POST'
+
+    CreativeWork creativeWork = createCreativeWork()
+    controller.save(creativeWork, MOCK_PART_NAME)
+
+    then:"A redirect is issued to the show action"
+    response.redirectedUrl == ('/creativeWorks/' + creativeWork.id)
+    controller.flash.message == 'default.too.many.requests.message'
+  }
+
+  void "Test the save action does not allow too many inserts by the same user per day"() {
+    given:
+    controller.partService = Mock(PartService) {
+      1 * countByDateCreatedGreaterThan(_) >> (PartController.MAX_ITEMS_ALLOWED_TODAY - 10)
+      1 * countByIpAddressHashAndDateCreatedGreaterThan(_, _) >> PartController.MAX_ITEMS_ALLOWED_TODAY_BY_CURRENT_USER
+      0 * save(_ as Part)
+    }
+    controller.utilityService = Mock(UtilityService) {
+      1 * getCurrentUserIpAddressHash(_) >> "-12345"
+    }
+
+    when:"The save action is executed with a valid instance"
+    response.reset()
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'POST'
+
+    CreativeWork creativeWork = createCreativeWork()
+    controller.save(creativeWork, MOCK_PART_NAME)
+
+    then:"A redirect is issued to the show action"
+    response.redirectedUrl == ('/creativeWorks/' + creativeWork.id)
+    controller.flash.message == 'default.too.many.requests.message'
+  }
 
   void "Test the show action with a null id"() {
     when:"The show action is executed with a null domain"

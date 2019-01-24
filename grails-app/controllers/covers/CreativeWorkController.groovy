@@ -9,6 +9,8 @@ class CreativeWorkController {
   UtilityService utilityService
 
   static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+  static final int MAX_ITEMS_ALLOWED_TODAY = 500
+  static final int MAX_ITEMS_ALLOWED_TODAY_BY_CURRENT_USER = 50
 
   def index(Integer max) {
     params.max = Math.min(max ?: 10, 100)
@@ -40,6 +42,12 @@ class CreativeWorkController {
     }
 
     creativeWork.ipAddressHash = utilityService.getCurrentUserIpAddressHash(request)
+
+    if (creativeWorkService.countByDateCreatedGreaterThan(utilityService.LAST_MIDNIGHT) >= MAX_ITEMS_ALLOWED_TODAY ||
+      creativeWorkService.countByIpAddressHashAndDateCreatedGreaterThan(creativeWork.ipAddressHash, utilityService.LAST_MIDNIGHT) >= MAX_ITEMS_ALLOWED_TODAY_BY_CURRENT_USER) {
+      tooManyRequests()
+      return
+    }
 
     try {
       creativeWorkService.save(creativeWork)
@@ -110,6 +118,17 @@ class CreativeWorkController {
         redirect action: "index", method: "GET"
       }
       '*'{ render status: NOT_FOUND }
+    }
+  }
+
+  // TODO: more DRY (same code in PartController and SuggestionController)
+  protected void tooManyRequests() {
+    request.withFormat {
+      form multipartForm {
+        flash.message = message(code: 'default.too.many.requests.message')
+        redirect action: "index", method: "GET"
+      }
+      '*'{ render status: TOO_MANY_REQUESTS }
     }
   }
 }

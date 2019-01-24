@@ -5,14 +5,16 @@ import grails.gorm.services.Service
 @Service(Suggestion)
 interface SuggestionService {
 
-    Suggestion get(Serializable id)
+  Suggestion get(Serializable id)
 
-    List<Suggestion> list(Map args)
+  List<Suggestion> list(Map args)
 
-    Long count()
+  Long count()
+  Long countByDateCreatedGreaterThan(Date dateCreated)
+  Long countByIpAddressHashAndDateCreatedGreaterThan(String ipAddressHash, Date dateCreated)
 
-    void delete(Serializable id)
+  void delete(Serializable id)
 
-    Suggestion save(Suggestion suggestion)
+  Suggestion save(Suggestion suggestion)
 
 }

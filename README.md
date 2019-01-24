@@ -40,7 +40,7 @@ docker-compose up test
 - [x] Execute all tests via Travis CI (configure test DB, …), make sure entire build fails when test execution fails
 - [ ] Consistently use 2 spaces (instead of 4)
 - [ ] Convert source code TODOs into Github issues
-- [ ] Deploy the app so that it is public for all musicians in the world
+- [x] Deploy the app so that it is public for all musicians in the world
 - [ ] Input boxes are maybe too small sometimes and should be replaced by a textarea
 - [ ] Admin login to approve incoming data
 - [ ] Edit or delete own information

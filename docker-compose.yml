@@ -19,6 +19,8 @@ services:
     image: gradle:3.5-jdk8
     environment:
       GRAILS_HOME: "/home/gradle/grails"
+      # PATH="$PATH:$GRAILS_HOME/bin" # ... won't work
+      PATH: "/usr/local/sbin:/usr/local/bin:/usr/sbin:/usr/bin:/sbin:/bin:/home/gradle/grails/bin"
     volumes:
       - .:/home/gradle/covers
       - ./grails:/home/gradle/grails
@@ -30,15 +32,9 @@ services:
     working_dir: "/home/gradle/covers"
     command: "gradle bootRun"
   test:
-    image: gradle:3.5-jdk8
-    volumes:
-      - .:/home/gradle/covers
-      - ./cache:/home/gradle/.gradle
-    ports:
-      - "8080:8080"
+    <<: *dev
     depends_on:
       - dbtest
-    working_dir: "/home/gradle/covers"
     command: "gradle test integrationTest --info"
   prod:
     <<: *dev

@@ -10,6 +10,8 @@ class PartController {
   UtilityService utilityService
 
   static allowedMethods = [save: "POST", update: "PUT", delete: "DELETE"]
+  static final int MAX_ITEMS_ALLOWED_TODAY = 500
+  static final int MAX_ITEMS_ALLOWED_TODAY_BY_CURRENT_USER = 50
 
   def save(CreativeWork creativeWork, String name) {
     if (creativeWork == null) {
@@ -21,9 +23,16 @@ class PartController {
 
     // TODO: How can Part information be extracted from command object?
     Part part = new Part()
+    part.ipAddressHash = currentUserIpAddressHash
+
+    if (partService.countByDateCreatedGreaterThan(utilityService.LAST_MIDNIGHT) >= MAX_ITEMS_ALLOWED_TODAY ||
+      partService.countByIpAddressHashAndDateCreatedGreaterThan(currentUserIpAddressHash, utilityService.LAST_MIDNIGHT) >= MAX_ITEMS_ALLOWED_TODAY_BY_CURRENT_USER) {
+      tooManyRequests(creativeWork)
+      return
+    }
+
     part.creativeWork = creativeWork
     part.name = name
-    part.ipAddressHash = currentUserIpAddressHash
     part.validate()
 
     if (part.hasErrors()) {
@@ -96,6 +105,17 @@ class PartController {
         redirect action: "index", method: "GET"
       }
       '*'{ render status: NOT_FOUND }
+    }
+  }
+
+  // TODO: more DRY (same code in PartController and SuggestionController)
+  protected void tooManyRequests(creativeWork) {
+    request.withFormat {
+      form multipartForm {
+        flash.message = message(code: 'default.too.many.requests.message')
+        redirect creativeWork
+      }
+      '*'{ render status: TOO_MANY_REQUESTS }
     }
   }
 }

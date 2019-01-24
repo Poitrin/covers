@@ -98,6 +98,59 @@ class CreativeWorkControllerSpec extends Specification implements ControllerUnit
     view == 'create'
   }
 
+  void "Test the save action does not allow too many inserts per day"() {
+    given:
+    controller.creativeWorkService = Mock(CreativeWorkService) {
+      1 * countByDateCreatedGreaterThan(_) >> CreativeWorkController.MAX_ITEMS_ALLOWED_TODAY
+      0 * countByIpAddressHashAndDateCreatedGreaterThan(_, _) >> 0
+      0 * save(_ as CreativeWork)
+    }
+    controller.utilityService = Mock(UtilityService) {
+      // TODO: DRYer
+      1 * getCurrentUserIpAddressHash(_) >> "-12345"
+    }
+
+    when:"The save action is executed with a valid instance"
+    response.reset()
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'POST'
+    populateValidParams(params)
+    def creativeWork = new CreativeWork(params)
+    creativeWork.id = 1
+
+    controller.save(creativeWork)
+
+    then:"A redirect is issued to the index action"
+    response.redirectedUrl == '/creativeWorks'
+    controller.flash.message == 'default.too.many.requests.message'
+  }
+
+  void "Test the save action does not allow too many inserts by the same user per day"() {
+    given:
+    controller.creativeWorkService = Mock(CreativeWorkService) {
+      1 * countByDateCreatedGreaterThan(_) >> (CreativeWorkController.MAX_ITEMS_ALLOWED_TODAY - 10)
+      1 * countByIpAddressHashAndDateCreatedGreaterThan(_, _) >> CreativeWorkController.MAX_ITEMS_ALLOWED_TODAY_BY_CURRENT_USER
+      0 * save(_ as CreativeWork)
+    }
+    controller.utilityService = Mock(UtilityService) {
+      1 * getCurrentUserIpAddressHash(_) >> "-12345"
+    }
+
+    when:"The save action is executed with a valid instance"
+    response.reset()
+    request.contentType = FORM_CONTENT_TYPE
+    request.method = 'POST'
+    populateValidParams(params)
+    def creativeWork = new CreativeWork(params)
+    creativeWork.id = 1
+
+    controller.save(creativeWork)
+
+    then:"A redirect is issued to the index action"
+    response.redirectedUrl == '/creativeWorks'
+    controller.flash.message == 'default.too.many.requests.message'
+  }
+
   void "Test the show action with a null id"() {
     given:
     controller.creativeWorkService = Mock(CreativeWorkService) {
