@@ -5,7 +5,7 @@
   <meta name="layout" content="main" />
   <g:set var="entityName" value="${message(code: 'creativeWork.label', default: 'CreativeWork')}" />
   <title>
-    <g:message code="default.show.label" args="[entityName]" />
+    <g:message code="creativeWork.show.label" args="${[creativeWork.artist + ' – ' + creativeWork.title]}" />
   </title>
 </head>
 
