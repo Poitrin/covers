@@ -14,6 +14,17 @@
         </div>
       </g:if>
 
+      <g:form url="/creativeWorks" method="GET" class="field">
+        <div class="field has-addons">
+          <f:field class="input" type="search" bean="search" property="query" label="hidden" fieldTag="hidden" />
+          <div class="control">
+            <button class="button is-primary">
+              <g:message code="default.search.label" />
+            </button>
+          </div>
+        </div>
+      </g:form>
+
       <!-- Note: When creativeWorkList is empty, "[null, *creativeWorkList]" would display 2 "Create new creative work" links -->
       <g:each in="${(creativeWorkList == null ? [null] : [null, *creativeWorkList]).collate(4)}" var="row">
       <div class="tile is-ancestor">

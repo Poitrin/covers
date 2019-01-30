@@ -104,6 +104,7 @@ environments:
       driverClassName: org.postgresql.Driver
       username: postgres
       password: password
+      logSql: true
   test:
     dataSource:
       dbCreate: create-drop

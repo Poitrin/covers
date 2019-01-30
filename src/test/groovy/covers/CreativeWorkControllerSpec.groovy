@@ -18,6 +18,7 @@ class CreativeWorkControllerSpec extends Specification implements ControllerUnit
     given:
     controller.creativeWorkService = Mock(CreativeWorkService) {
       1 * findAllByApprovedOrIpAddressHash(_, _) >> []
+      0 * searchCreativeWorks(_, _) >> []
       1 * count() >> 0
     }
     controller.utilityService = Mock(UtilityService) {
@@ -30,6 +31,23 @@ class CreativeWorkControllerSpec extends Specification implements ControllerUnit
     then:"The model is correct"
     !model.creativeWorkList
     model.creativeWorkCount == 0
+  }
+
+  void "Test the index action uses the correct method when a query parameter is given"() {
+    given:
+    controller.creativeWorkService = Mock(CreativeWorkService) {
+      0 * findAllByApprovedOrIpAddressHash(_, _) >> []
+      1 * searchCreativeWorks(_, _) >> []
+    }
+    controller.utilityService = Mock(UtilityService) {
+      1 * getCurrentUserIpAddressHash(_) >> "-12345"
+    }
+
+    when:"The index action is executed"
+    controller.index(100, 'Beatles')
+
+    then:"The model is correct"
+    !model.creativeWorkList 
   }
 
   void "Test the create action returns the correct model"() {

@@ -1,6 +1,7 @@
 package covers
 
 import grails.gorm.services.Service
+import grails.gorm.services.Where
 
 @Service(CreativeWork)
 interface CreativeWorkService {
@@ -9,9 +10,13 @@ interface CreativeWorkService {
 
   List<CreativeWork> list(Map args)
 
-  List<CreativeWork> findAllByApprovedOrDateCreatedGreaterThan(Boolean approved, Date dateCreated)
-
   List<CreativeWork> findAllByApprovedOrIpAddressHash(Boolean approved, String ipAddressHash)
+
+  @Where({
+    (approved == true || ipAddressHash == currentIpAddressHash) &&
+    (title =~ "%${query}%" || artist =~ "%${query}%")
+  })
+  List<CreativeWork> searchCreativeWorks(String currentIpAddressHash, String query)
 
   Long count()
   Long countByDateCreatedGreaterThan(Date dateCreated)

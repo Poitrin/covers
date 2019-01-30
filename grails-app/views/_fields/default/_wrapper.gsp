@@ -1,4 +1,7 @@
+<g:if test="${fieldTag != 'hidden'}">
 <div class="field">
+</g:if>
+
   <!-- TODO: Find better solution than label != 'hidden' -->
   <g:if test="${label != 'hidden'}">
   <label class="label" for="${property}">
@@ -25,4 +28,7 @@
       </p>
     </g:eachError>
   </g:hasErrors>
+
+<g:if test="${fieldTag != 'hidden'}">
 </div>
+</g:if>

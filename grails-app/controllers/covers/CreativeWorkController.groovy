@@ -3,6 +3,10 @@ package covers
 import grails.validation.ValidationException
 import static org.springframework.http.HttpStatus.*
 
+class Search {
+  String query
+}
+
 class CreativeWorkController {
 
   CreativeWorkService creativeWorkService
@@ -12,15 +16,20 @@ class CreativeWorkController {
   static final int MAX_ITEMS_ALLOWED_TODAY = 500
   static final int MAX_ITEMS_ALLOWED_TODAY_BY_CURRENT_USER = 50
 
-  def index(Integer max) {
+  def index(Integer max, String query) {
     params.max = Math.min(max ?: 10, 100)
     params.sort = "id"
     params.order = "desc"
 
     def currentUserIpAddressHash = utilityService.getCurrentUserIpAddressHash(request)
+    def result = (query == null || query == "") ? creativeWorkService.findAllByApprovedOrIpAddressHash(true, currentUserIpAddressHash) :
+      creativeWorkService.searchCreativeWorks(currentUserIpAddressHash, query)
 
-    respond creativeWorkService.findAllByApprovedOrIpAddressHash(true, currentUserIpAddressHash),
-      model: [creativeWorkCount: creativeWorkService.count()]
+    respond result,
+      model: [
+        creativeWorkCount: creativeWorkService.count(),
+        search: new Search(query: query)
+      ]
   }
 
   def show(Long id) {

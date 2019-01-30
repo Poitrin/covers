@@ -21,6 +21,8 @@ class CreativeWorkServiceSpec extends Specification {
     CreativeWork creativeWork = new CreativeWork(title: "It's My Life", artist: 'Bon Jovi', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     new CreativeWork(title: 'Can You Feel The Love Tonight', artist: 'Elton John', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     new CreativeWork(title: 'Imagine', artist: 'John Lennon', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'A Day In The Life', artist: 'The Beatles', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'Eight Days a Week', artist: 'The Beatles', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     
     creativeWork.id
   }
@@ -43,25 +45,35 @@ class CreativeWorkServiceSpec extends Specification {
     // TODO: Verify the correct instances are returned
   }
 
+  void "test searchCreativeWorks"() {
+    setupData()
+
+    expect:
+    creativeWorkService.searchCreativeWorks(MOCK_IP_ADDRESS_HASH, 'liFe').collect { it.title }.sort() == ['A Day In The Life', "It's My Life"]
+    creativeWorkService.searchCreativeWorks('-5275184', 'liFe') == []
+    creativeWorkService.searchCreativeWorks(MOCK_IP_ADDRESS_HASH, 'beatles').collect { it.title }.sort() == ['A Day In The Life', 'Eight Days a Week']
+    creativeWorkService.searchCreativeWorks(MOCK_IP_ADDRESS_HASH, 'not in this list') == []
+  }
+
   void "test count"() {
     setupData()
 
     expect:
-    creativeWorkService.count() == 5
+    creativeWorkService.count() == 7
   }
 
   void "test countByDateCreatedGreaterThan"() {
     setupData()
 
     expect:
-    creativeWorkService.countByDateCreatedGreaterThan(utilityService.LAST_MIDNIGHT) == 5
+    creativeWorkService.countByDateCreatedGreaterThan(utilityService.LAST_MIDNIGHT) == 7
   }
 
   void "test countByIpAddressHashAndDateCreatedGreaterThan"() {
     setupData()
 
     expect:
-    creativeWorkService.countByIpAddressHashAndDateCreatedGreaterThan(MOCK_IP_ADDRESS_HASH, utilityService.LAST_MIDNIGHT) == 5
+    creativeWorkService.countByIpAddressHashAndDateCreatedGreaterThan(MOCK_IP_ADDRESS_HASH, utilityService.LAST_MIDNIGHT) == 7
     creativeWorkService.countByIpAddressHashAndDateCreatedGreaterThan('-5275184', utilityService.LAST_MIDNIGHT) == 0
   }
 
@@ -69,14 +81,14 @@ class CreativeWorkServiceSpec extends Specification {
     Long creativeWorkId = setupData()
 
     expect:
-    creativeWorkService.count() == 5
+    creativeWorkService.count() == 7
 
     when:
     creativeWorkService.delete(creativeWorkId)
     sessionFactory.currentSession.flush()
 
     then:
-    creativeWorkService.count() == 4
+    creativeWorkService.count() == 6
   }
 
   void "test save"() {
