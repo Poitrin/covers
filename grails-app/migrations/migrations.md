@@ -26,5 +26,9 @@ For development:
 grails dbm-update
 
 For other environments:
-grails (test/production) dbm-update
+grails (dev/test/prod) dbm-update
+
+Do not forget to set environment variables if you want to deploy to production:
+export DB_USERNAME='...'
+export DB_PASSWORD='...'
 ```

@@ -14,6 +14,12 @@
         </div>
       </g:if>
 
+      <div class="message is-info">
+        <div class="message-body">
+          <g:message code="default.privacy" />
+        </div>
+      </div>
+
       <g:form url="/creativeWorks" method="GET" class="field">
         <div class="field has-addons">
           <f:field class="input" type="search" bean="search" property="query" label="hidden" fieldTag="hidden" />
