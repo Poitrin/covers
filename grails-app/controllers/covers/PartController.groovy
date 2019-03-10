@@ -13,7 +13,7 @@ class PartController {
   static final int MAX_ITEMS_ALLOWED_TODAY = 500
   static final int MAX_ITEMS_ALLOWED_TODAY_BY_CURRENT_USER = 50
 
-  def save(CreativeWork creativeWork, String name) {
+  def save(CreativeWork creativeWork, String name, String timingHumanReadable) {
     if (creativeWork == null) {
       notFound()
       return
@@ -33,6 +33,7 @@ class PartController {
 
     part.creativeWork = creativeWork
     part.name = name
+    part.timingHumanReadable = timingHumanReadable
     part.validate()
 
     if (part.hasErrors()) {

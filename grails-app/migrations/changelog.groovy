@@ -119,4 +119,6 @@ databaseChangeLog = {
     changeSet(author: "gradle (generated)", id: "1547982677780-6") {
         addForeignKeyConstraint(baseColumnNames: "part_id", baseTableName: "suggestion", constraintName: "FKs70t6cn3h1mj4aqru2wx5t8xb", deferrable: "false", initiallyDeferred: "false", referencedColumnNames: "id", referencedTableName: "part")
     }
+    include file: '20190210.groovy'
+    include file: '20190224.groovy'
 }

@@ -1,9 +1,39 @@
 package covers
 
+import java.util.UUID
+
 class CreativeWork {
   String artist
+  /**
+   * https://musicbrainz.org/doc/MusicBrainz_Identifier
+   * Temporarily disabled.
+   * Artist search on MusicBrainz is easy to use, but Recording search creates too many results.
+   *
+   * Example:
+   * Coldplay - The Scientist
+   * https://musicbrainz.org/search?query=The+Scientist&type=recording&method=indexed
+   * has results from all albums, compilations, etc.
+   * We could select on "Works", but e.g.
+   * Coldplay - Hypnotised
+   * is not listed as Work, only as Recording.
+   * https://musicbrainz.org/search?query=Hypnotised&type=work&method=direct --> no correct result
+   */
+  // UUID artistMBID
   String title
+  /**
+    * https://musicbrainz.org/doc/MusicBrainz_Identifier
+    *
+    * MusicBrainz has the following schema:
+    * Release group (has many) Release (has many) Recording
+    * Example:
+    * Artist = Coldplay
+    * -> Release group = A Rush of Blood to the Head
+    *    -> Release of album in GB / Japan / …
+    *       -> Recording of "The Scientist"
+    */
+  // UUID recordingMBID
   Boolean approved = false
+  String youtubeVideoId = null
 
   // Timestamps
   // From the doc: By default when you have properties called dateCreated and/or lastUpdated in a domain class,
@@ -15,7 +45,17 @@ class CreativeWork {
 
   static constraints = {
     artist blank: false
+    // artistMBID blank: false
     title blank: false
+    // recordingMBID blank: false
+
+    /**
+     * https://webapps.stackexchange.com/questions/13854/are-youtube-codes-guaranteed-to-always-be-11-characters
+     * At the moment (2018-03-10), we assume that every YouTube video ID has exactly 11 characters.
+     */
+    youtubeVideoId blank: false
+    youtubeVideoId minSize: 11
+    youtubeVideoId maxSize: 11
   }
 
   static hasMany = [parts: Part]

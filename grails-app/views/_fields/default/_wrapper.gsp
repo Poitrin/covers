@@ -9,17 +9,30 @@
   </label>
   </g:if>
 
-  <div class="control">
-    <g:field class="input ${hasErrors(bean: bean, field: property, 'is-danger')}"
-      type="text"
+  <div class="control ${controlClass}"
+    :class="{ 'is-loading': isLoading }">
+    <g:field type="text"
+      class="input ${hasErrors(bean: bean, field: property, 'is-danger')}"
       name="${(prefix ?: '') + property}"
       id="${property}"
       value="${value}"
-      placeholder="${placeholder}">
-    </g:field>
-  </div>
+      placeholder="${placeholder}"
+      required="${required}"
+      disabled="${!vueDisabled && disabled}"
 
-  <!-- TODO: <g:if test="${required}">required</g:if>-->
+      list="${list}"
+      autocomplete="${list ? 'off' : 'on'}"
+      v-model="${property}"
+      @input="${list ? 'fetch' + list : null}"
+      @input="${vueInput ?: null}"
+      :disabled="${vueDisabled}">
+    </g:field>
+    <g:if test="${list}">
+      <datalist id="${list}">
+        <option v-for="item in ${list}">{{ item.label }}</option>
+      </datalist>
+    </g:if>
+  </div>
 
   <g:hasErrors bean="${bean}" field="${property}">
     <g:eachError bean="${bean}" field="${property}" as="list">

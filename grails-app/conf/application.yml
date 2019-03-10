@@ -78,6 +78,15 @@ grails:
         scriptlets: html
         taglib: none
         staticparts: none
+  tags:
+    booleanToAttributes:
+      - disabled
+      - checked
+      - readonly
+      - required # Check out doc: https://gsp.grails.org/latest/ref/Tags/field.html
+  plugin:
+    fields:
+      disableLookupCache: true
 endpoints:
   jmx:
     unique-names: true
@@ -99,7 +108,7 @@ dataSource:
 environments:
   development:
     dataSource:
-      dbCreate: update # create-drop
+      dbCreate: none # create-drop
       url: jdbc:postgresql://db:5432/covers
       driverClassName: org.postgresql.Driver
       username: postgres
@@ -107,7 +116,7 @@ environments:
       logSql: true
   test:
     dataSource:
-      dbCreate: create-drop
+      dbCreate: none
       # in Travis-CI: dbtest = localhost
       url: jdbc:postgresql://dbtest:5432/covers
       driverClassName: org.postgresql.Driver

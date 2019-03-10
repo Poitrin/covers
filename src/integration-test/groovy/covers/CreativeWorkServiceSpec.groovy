@@ -4,6 +4,7 @@ import grails.testing.mixin.integration.Integration
 import grails.gorm.transactions.Rollback
 import spock.lang.Specification
 import org.hibernate.SessionFactory
+import org.apache.commons.lang.RandomStringUtils
 
 @Integration
 @Rollback
@@ -16,13 +17,13 @@ class CreativeWorkServiceSpec extends Specification {
   static final MOCK_IP_ADDRESS_HASH = '-1234567';
 
   private Long setupData() {
-    new CreativeWork(title: 'The Show Must Go On', artist: 'Queen', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
-    new CreativeWork(title: 'The Winner Takes It All', artist: 'ABBA', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
-    CreativeWork creativeWork = new CreativeWork(title: "It's My Life", artist: 'Bon Jovi', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
-    new CreativeWork(title: 'Can You Feel The Love Tonight', artist: 'Elton John', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
-    new CreativeWork(title: 'Imagine', artist: 'John Lennon', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
-    new CreativeWork(title: 'A Day In The Life', artist: 'The Beatles', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
-    new CreativeWork(title: 'Eight Days a Week', artist: 'The Beatles', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'The Show Must Go On', artist: 'Queen', youtubeVideoId: RandomStringUtils.randomAlphanumeric(11), ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'The Winner Takes It All', artist: 'ABBA', youtubeVideoId: RandomStringUtils.randomAlphanumeric(11), ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    CreativeWork creativeWork = new CreativeWork(title: "It's My Life", artist: 'Bon Jovi', youtubeVideoId: RandomStringUtils.randomAlphanumeric(11), ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'Can You Feel The Love Tonight', artist: 'Elton John', youtubeVideoId: RandomStringUtils.randomAlphanumeric(11), ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'Imagine', artist: 'John Lennon', youtubeVideoId: RandomStringUtils.randomAlphanumeric(11), ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'A Day In The Life', artist: 'The Beatles', youtubeVideoId: RandomStringUtils.randomAlphanumeric(11), ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
+    new CreativeWork(title: 'Eight Days a Week', artist: 'The Beatles', youtubeVideoId: RandomStringUtils.randomAlphanumeric(11), ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     
     creativeWork.id
   }
@@ -93,7 +94,7 @@ class CreativeWorkServiceSpec extends Specification {
 
   void "test save"() {
     when:
-    CreativeWork creativeWork = new CreativeWork(title: 'Mamma Mia', artist: 'ABBA', ipAddressHash: MOCK_IP_ADDRESS_HASH)
+    CreativeWork creativeWork = new CreativeWork(title: 'Mamma Mia', artist: 'ABBA', youtubeVideoId: RandomStringUtils.randomAlphanumeric(11), ipAddressHash: MOCK_IP_ADDRESS_HASH)
     creativeWorkService.save(creativeWork)
 
     then:

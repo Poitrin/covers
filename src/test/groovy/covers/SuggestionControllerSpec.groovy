@@ -4,6 +4,7 @@ import grails.testing.gorm.DomainUnitTest
 import grails.testing.web.controllers.ControllerUnitTest
 import grails.validation.ValidationException
 import spock.lang.*
+import org.apache.commons.lang.RandomStringUtils
 
 class SuggestionControllerSpec extends Specification implements ControllerUnitTest<SuggestionController>, DomainUnitTest<Suggestion> {
   static final MOCK_PART_NAME = 'Piano at the beginning of the song'
@@ -14,6 +15,7 @@ class SuggestionControllerSpec extends Specification implements ControllerUnitTe
     CreativeWork creativeWork = new CreativeWork(
       title: 'Lady Madonna',
       artist: 'The Beatles',
+      youtubeVideoId: RandomStringUtils.randomAlphanumeric(11),
       ipAddressHash: MOCK_IP_ADDRESS_HASH)
     assert creativeWork.validate() == true
     

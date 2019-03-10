@@ -18,4 +18,5 @@ cache:
     - $HOME/.gradle/wrapper/
 
 script:
+  # - grails test dbm-update
   - gradle test integrationTest --info

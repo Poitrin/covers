@@ -4,6 +4,7 @@ import grails.testing.mixin.integration.Integration
 import grails.gorm.transactions.Rollback
 import spock.lang.Specification
 import org.hibernate.SessionFactory
+import org.apache.commons.lang.RandomStringUtils
 
 @Integration
 @Rollback
@@ -19,6 +20,7 @@ class PartServiceSpec extends Specification {
     CreativeWork creativeWork = new CreativeWork(
       title: 'The Show Must Go On',
       artist: 'Queen',
+      youtubeVideoId: RandomStringUtils.randomAlphanumeric(11),
       ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     new Part(creativeWork: creativeWork, name: 'Piano at the beginning', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     new Part(creativeWork: creativeWork, name: 'Synth guitar in the middle', ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
@@ -88,6 +90,7 @@ class PartServiceSpec extends Specification {
     CreativeWork creativeWork = new CreativeWork(
       title: 'The Show Must Go On',
       artist: 'Queen',
+      youtubeVideoId: RandomStringUtils.randomAlphanumeric(11),
       ipAddressHash: MOCK_IP_ADDRESS_HASH).save(flush: true, failOnError: true)
     Part part = new Part(
       creativeWork: creativeWork,

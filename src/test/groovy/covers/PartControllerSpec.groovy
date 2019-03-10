@@ -43,7 +43,7 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
     when:"Save is called for a domain instance that doesn't exist"
     request.contentType = FORM_CONTENT_TYPE
     request.method = 'POST'
-    controller.save(null, "part name")
+    controller.save(null, "part name", null)
 
     then:"A 404 error is returned"
     response.redirectedUrl == '/part/index'
@@ -69,7 +69,7 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
     request.method = 'POST'
 
     CreativeWork creativeWork = createCreativeWork()
-    controller.save(creativeWork, MOCK_PART_NAME)
+    controller.save(creativeWork, MOCK_PART_NAME, null)
 
     then:"A redirect is issued to the show action"
     response.redirectedUrl == ('/creativeWorks/' + creativeWork.id)
@@ -90,7 +90,7 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
     request.contentType = FORM_CONTENT_TYPE
     request.method = 'POST'
 
-    controller.save(createCreativeWork(), "")
+    controller.save(createCreativeWork(), "", null)
 
     then:"The creativeWork/show view is rendered again with the correct model"
     model.creativeWork != null
@@ -115,7 +115,7 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
     request.method = 'POST'
 
     CreativeWork creativeWork = createCreativeWork()
-    controller.save(creativeWork, MOCK_PART_NAME)
+    controller.save(creativeWork, MOCK_PART_NAME, null)
 
     then:"A redirect is issued to the show action"
     response.redirectedUrl == ('/creativeWorks/' + creativeWork.id)
@@ -139,7 +139,7 @@ class PartControllerSpec extends Specification implements ControllerUnitTest<Par
     request.method = 'POST'
 
     CreativeWork creativeWork = createCreativeWork()
-    controller.save(creativeWork, MOCK_PART_NAME)
+    controller.save(creativeWork, MOCK_PART_NAME, null)
 
     then:"A redirect is issued to the show action"
     response.redirectedUrl == ('/creativeWorks/' + creativeWork.id)

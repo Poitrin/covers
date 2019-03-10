@@ -36,18 +36,28 @@
       <g:form resource="${this.creativeWork}" method="POST">
         <div class="columns">
           <div class="column is-6">
-            <f:field bean="creativeWork" property="artist"/>
+            <f:field bean="creativeWork" property="youtubeVideoId" vueInput="fetchCreativeWorkByYoutubeVideoId" />
           </div>
         </div>
 
         <div class="columns">
           <div class="column is-6">
-            <f:field bean="creativeWork" property="title"/>
+            <f:field bean="creativeWork" property="artist" vueDisabled="!hasSearched" />
+          </div>
+        </div>
+
+        <div class="columns">
+          <div class="column is-6">
+            <f:field bean="creativeWork" property="title" vueDisabled="!hasSearched" />
           </div>
         </div>
 
         <g:submitButton name="create" class="button" value="${message(code: 'default.button.create.label', default: 'Create')}" />
       </g:form>
     </div>
+
+    <content tag="footscripts">
+      <asset:javascript src="create-creativeWork.js" />
+    </content>
   </body>
 </html>

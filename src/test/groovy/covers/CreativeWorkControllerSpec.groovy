@@ -4,6 +4,7 @@ import grails.testing.gorm.DomainUnitTest
 import grails.testing.web.controllers.ControllerUnitTest
 import grails.validation.ValidationException
 import spock.lang.*
+import org.apache.commons.lang.RandomStringUtils
 
 class CreativeWorkControllerSpec extends Specification implements ControllerUnitTest<CreativeWorkController>, DomainUnitTest<CreativeWork> {
 
@@ -12,6 +13,7 @@ class CreativeWorkControllerSpec extends Specification implements ControllerUnit
 
     params["title"] = 'The Show Must Go On'
     params["artist"] = 'Queen'
+    params['youtubeVideoId'] = RandomStringUtils.randomAlphanumeric(11)
   }
 
   void "Test the index action returns the correct model"() {

@@ -69,12 +69,25 @@
   </div>
   </g:hasErrors>
 
+  <g:if test="${creativeWork.youtubeVideoId}">
+  <div class="columns">
+    <div class="column is-12">
+      <div class="box">
+        <div id="player" data-youtube-video-id="${creativeWork.youtubeVideoId}">
+        </div>
+      </div>
+    </div>
+  </div>
+  </g:if>
+
   <g:each in="${[*creativeWork.approvedParts(currentUserIpAddressHash), null]}" var="part">
   <div class="columns">
     <div class="column">
       <div class="box">
         <g:if test="${part}">
-        <p class="title">${part.name}</p>
+        <p class="title">
+          <a class="timing" data-timing="${part.timing}">${part.timingHumanReadable}</a>&nbsp;${part.name}
+        </p>
         <!-- Suggestions: -->
         <g:each in="${[null, *part.approvedSuggestions(currentUserIpAddressHash)].collate(3)}" var="row">
         <div class="tile is-ancestor">
@@ -105,23 +118,28 @@
         </g:each>
         </g:if>
         <g:else>
-        <div class="columns">
-          <div class="column is-6">
-            <g:form url="/creativeWorks/${creativeWork.id}/parts" method="POST">
-              <g:hiddenField name="creativeWorkId" value="${creativeWork.id}" />
-              <f:field bean="part" property="name" widget="textarea"
-                placeholder="${message(code: 'part.name.label')}"
-                label="hidden" />
+        <g:form url="/creativeWorks/${creativeWork.id}/parts" method="POST">
+          <div class="columns">
+            <div class="column is-8">
+              <div class="field is-grouped">
+                <g:hiddenField name="creativeWorkId" value="${creativeWork.id}" />
+                <f:field bean="part" property="timingHumanReadable" placeholder="${message(code: 'part.timingHumanReadable.label')}" label="hidden" fieldTag="hidden" />
+                <f:field bean="part" property="name" widget="textarea" placeholder="${message(code: 'part.name.label')}" label="hidden" fieldTag="hidden" controlClass="is-expanded" />
+              </div>
+
               <g:submitButton name="create" class="button" value="${message(code: 'default.button.create.label', default: 'Create')}" />
-            </g:form>
+            </div>
           </div>
-        </div>
+        </g:form>
         </g:else>
       </div>
     </div>
   </div>
   </g:each>
 
+  <content tag="footscripts">
+    <asset:javascript src="show-creativeWork.js" />
+  </content>
 </body>
 
 </html>
