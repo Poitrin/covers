@@ -44,8 +44,9 @@ docker-compose up test
 - [ ] Input boxes are maybe too small sometimes and should be replaced by a textarea
 - [ ] Admin login to approve incoming data
 - [ ] Edit or delete own information
-- [ ] Search functionality
-- [ ] Be able to add sources (e.g. forums, videos, …)
+- [x] Search functionality
+- [x] Be able to add YouTube videos
+- [ ] Be able to add sources (e.g. forums, …)
 - [ ] Generate documentation
 
 ### Tests that need to be written
