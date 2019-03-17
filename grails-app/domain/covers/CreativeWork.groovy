@@ -44,18 +44,16 @@ class CreativeWork {
   String ipAddressHash
 
   static constraints = {
-    artist blank: false
+    artist blank: false, maxSize: 100
     // artistMBID blank: false
-    title blank: false
+    title blank: false, maxSize: 100
     // recordingMBID blank: false
 
     /**
      * https://webapps.stackexchange.com/questions/13854/are-youtube-codes-guaranteed-to-always-be-11-characters
      * At the moment (2018-03-10), we assume that every YouTube video ID has exactly 11 characters.
      */
-    youtubeVideoId blank: false
-    youtubeVideoId minSize: 11
-    youtubeVideoId maxSize: 11
+    youtubeVideoId blank: false, minSize: 11, maxSize: 11
   }
 
   static hasMany = [parts: Part]

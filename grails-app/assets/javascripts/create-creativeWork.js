@@ -46,17 +46,17 @@ let app = new Vue({
   el: '#create-creativeWork',
   data: {
     artist: '',
-    // artistMBID: '',
     title: '',
-    /*
-    recordingMBID: '',
-    artists: [],
-    titles: [],
-    */
     youtubeVideoId: '',
     hasSearched: false,
     hasFoundResult: false,
     isLoading: false
+  },
+  mounted() {
+    // Initialize values in Vue model (from input value="..." attributes)
+    Object.keys(this.$refs).forEach(ref => {
+      this[ref] = this.$refs[ref].getAttribute('value');
+    })
   },
   methods: {
     fetchCreativeWorkByYoutubeVideoId: _.debounce(async function () {
