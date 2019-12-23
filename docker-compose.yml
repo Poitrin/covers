@@ -36,6 +36,8 @@ services:
     depends_on:
       - dbtest
     command: "gradle test integrationTest --info"
+    environment:
+      JDBC_TEST_DATABASE_URL: jdbc:postgresql://dbtest:5432/covers?user=postgres
   prod:
     <<: *dev
     command: "gradle -Dgrails.env=prod bootRun"

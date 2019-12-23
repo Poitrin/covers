@@ -36,6 +36,7 @@ class Part {
     timingHumanReadable nullable: true, matches: Part.TIMING_REGEX
   }
 
+  static belongsTo = [creativeWork: CreativeWork]
   static hasMany = [suggestions: Suggestion]
 
   Suggestion[] approvedSuggestions(String ipAddressHash) {

@@ -49,6 +49,7 @@ dependencies {
     compile "org.grails.plugins:gsp"
     compile 'org.liquibase:liquibase-core:3.5.5'
     compile 'org.grails.plugins:database-migration:3.0.4'
+    compile 'com.github.jsimone:webapp-runner:8.5.11.3'
     console "org.grails:grails-console"
     profile "org.grails.profiles:web"
     runtime "org.glassfish.web:el-impl:2.1.2-b03"
@@ -70,10 +71,15 @@ bootRun {
     systemProperty springProfilesActive, System.getProperty(springProfilesActive)
 }
 
-
 assets {
     minifyJs = true
     minifyCss = true
+
+    minifyOptions = [
+        languageMode: 'ES6',
+        targetLanguage: 'ES5',
+        optimizationLevel: 'SIMPLE'
+    ]
 }
 
 sourceSets {
@@ -83,3 +89,23 @@ sourceSets {
         }
     }
 }
+
+task stage() {
+    dependsOn clean, war
+}
+tasks.stage.doLast() {
+    delete fileTree(dir: "build/distributions")
+    delete fileTree(dir: "build/assetCompile")
+    delete fileTree(dir: "build/distributions")
+    delete fileTree(dir: "build/libs", exclude: "*.war")
+}
+war.mustRunAfter clean
+
+task copyToLib(type: Copy) {
+    into "$buildDir/server"
+    from(configurations.compile) {
+        include "webapp-runner*"
+    }
+}
+
+stage.dependsOn(copyToLib)

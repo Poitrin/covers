@@ -59,7 +59,7 @@ let app = new Vue({
     })
   },
   methods: {
-    fetchCreativeWorkByYoutubeVideoId: _.debounce(async function () {
+    fetchCreativeWorkByYoutubeVideoId: _.debounce(function () {
       this.youtubeVideoId = this.youtubeVideoId.replace(/^.+youtube.com.watch.v=/, '')
       // See comment about min/maxSize in CreativeWork.groovy!
       const YOUTUBE_VIDEO_ID_LENGTH = 11;
@@ -67,18 +67,19 @@ let app = new Vue({
         return;
       }
       this.isLoading = true;
-      const response = await fetchCreativeWorkByYoutubeVideoId(this.youtubeVideoId)
-        .catch(error => {
+      fetchCreativeWorkByYoutubeVideoId(this.youtubeVideoId)
+        .then(response => {
+          this.isLoading = false;
+          this.hasSearched = true;
+          if (this.hasFoundResult = !!response) {
+            Object.assign(this, response);
+          } else {
+            this.artist = '';
+            this.title = '';
+          }
+        }, error => {
           console.error(error);
         });
-      this.isLoading = false;
-      this.hasSearched = true;
-      if (this.hasFoundResult = !!response) {
-        Object.assign(this, response);
-      } else {
-        this.artist = '';
-        this.title = '';
-      }
     }, 250)
   }
 })

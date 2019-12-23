@@ -11,6 +11,8 @@ class Suggestion {
 
   String ipAddressHash
 
+  static belongsTo = [part: Part]
+
   static constraints = {
     approved defaultValue: false
     instrument blank: false, minSize: 3

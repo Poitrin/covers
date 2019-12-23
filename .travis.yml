@@ -6,6 +6,7 @@ services:
 addons:
   hosts:
     - dbtest
+# in Travis-CI: dbtest = localhost
 
 before_script:
   - psql -c 'create database covers;' -U postgres
@@ -20,3 +21,6 @@ cache:
 script:
   # - grails test dbm-update
   - gradle test integrationTest --info
+
+env:
+  - JDBC_TEST_DATABASE_URL=jdbc:postgresql://dbtest:5432/covers?user=postgres
