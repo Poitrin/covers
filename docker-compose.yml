@@ -16,7 +16,7 @@ services:
       POSTGRES_PASSWORD: ""
   dev: &dev
     # Grails 3.3.8 does not support Java 10. You will have to use Java 7 or Java 8 if you want to use Grails 3.3.8.
-    image: gradle:3.5-jdk8
+    image: gradle:5.0
     environment:
       GRAILS_HOME: "/home/gradle/grails"
       # PATH="$PATH:$GRAILS_HOME/bin" # ... won't work
